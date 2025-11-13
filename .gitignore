@@ -22,7 +22,6 @@ gradle/
 *.iml
 *.ipr
 *.iws
-libs/
 temp_extract/
 
 .DS_Store
