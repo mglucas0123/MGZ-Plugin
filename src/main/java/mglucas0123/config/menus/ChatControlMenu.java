@@ -2,6 +2,7 @@ package mglucas0123.config.menus;
 
 import mglucas0123.Principal;
 import mglucas0123.config.ConfigEditorGUI;
+import mglucas0123.config.GUITemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,15 +21,16 @@ public class ChatControlMenu extends BaseMenu {
     
     @Override
     public void open(Player player) {
+        GUITemplate template = loadTemplate("ChatControl", 54);
         Inventory inv = Bukkit.createInventory(null, 54, "§8§l▬▬▬▬▬ §b§l💬 Chat Control 💬 §8§l▬▬▬▬▬");
         
         boolean showDeath = plugin.getConfig().getBoolean("ChatControl.MostrarMorte");
         
         
-        ItemStack headerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, "§8", "");
-        ItemStack footerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, "§8", "");
-        ItemStack sideBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, "§8", "");
-        ItemStack empty = createItem(Material.GRAY_STAINED_GLASS_PANE, "§7", "");
+        ItemStack headerBorder = createItem(template.getMaterial("header_border"), "§8", "");
+        ItemStack footerBorder = createItem(template.getMaterial("footer_border"), "§8", "");
+        ItemStack sideBorder = createItem(template.getMaterial("side_border"), "§8", "");
+        ItemStack empty = createItem(template.getMaterial("filler"), "§7", "");
         
         
         for (int i = 0; i < 9; i++) inv.setItem(i, headerBorder);
@@ -66,7 +68,7 @@ public class ChatControlMenu extends BaseMenu {
             "§e§l➤ Clique para alternar"));
         
         
-        inv.setItem(19, createItem(Material.KNOWLEDGE_BOOK, "§9§l📖 INFORMAÇÕES",
+        inv.setItem(19, createItem(template.getMaterial("info_button"), "§9§l📖 INFORMAÇÕES",
             "§8§m─────────────────────"));
         
         inv.setItem(20, createItem(Material.ITEM_FRAME, "§7§lⓘ Como Funciona",
@@ -93,7 +95,7 @@ public class ChatControlMenu extends BaseMenu {
             "§7Configurações aplicadas com sucesso"));
         
         
-        inv.setItem(49, createItem(Material.ARROW, "§7§l« Voltar",
+        inv.setItem(49, createItem(template.getMaterial("back_button"), "§7§l« Voltar",
             "§8§m───────────────────────",
             "§7Retornar ao menu principal",
             "§8§m───────────────────────",

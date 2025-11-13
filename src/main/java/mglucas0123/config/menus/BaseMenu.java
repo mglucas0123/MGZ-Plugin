@@ -1,6 +1,7 @@
 package mglucas0123.config.menus;
 
 import mglucas0123.Principal;
+import mglucas0123.config.GUITemplate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -44,5 +45,13 @@ public abstract class BaseMenu {
                 inv.setItem(i, empty);
             }
         }
+    }
+    
+    protected GUITemplate loadTemplate(String menuName, int size) {
+        GUITemplate template = GUITemplate.load(menuName, plugin.getConfig());
+        if (template == null) {
+            template = new GUITemplate(menuName, size);
+        }
+        return template;
     }
 }

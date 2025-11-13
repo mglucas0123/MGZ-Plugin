@@ -3,6 +3,7 @@ package mglucas0123.config.menus;
 import mglucas0123.Principal;
 import mglucas0123.config.ChatInputManager;
 import mglucas0123.config.ConfigEditorGUI;
+import mglucas0123.config.GUITemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,6 +32,7 @@ public class AutoRestartMenu extends BaseMenu {
     
     @Override
     public void open(Player player) {
+        GUITemplate template = loadTemplate("AutoRestart", 54);
         Inventory inv = Bukkit.createInventory(null, 54, "§0§l⬛ §c§l⚡ AutoRestart Control §0§l⬛");
         
         boolean enabled = plugin.getConfig().getBoolean("AutoRestart.Enabled");
@@ -42,7 +44,7 @@ public class AutoRestartMenu extends BaseMenu {
         long minutesUntilRestart = getMinutesUntilRestart(times);
         
         
-        ItemStack headerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
+        ItemStack headerBorder = createItem(template.getMaterial("header_border"), " ");
         ItemStack accentRed = createItem(Material.RED_STAINED_GLASS_PANE, "§c◆");
         
         for (int i = 0; i < 9; i++) {
@@ -123,7 +125,7 @@ public class AutoRestartMenu extends BaseMenu {
         
         
         if (sortedTimes.size() > 6) {
-            inv.setItem(25, createItem(Material.ARROW, "§e§l▼ Mais Horários",
+            inv.setItem(25, createItem(template.getMaterial("back_button"), "§e§l▼ Mais Horários",
                 "§8§m──────────────────────",
                 "§7Total: §f" + sortedTimes.size() + " horários",
                 "§7Exibindo: §f6 primeiros",
@@ -134,7 +136,7 @@ public class AutoRestartMenu extends BaseMenu {
         }
         
         
-        inv.setItem(28, createItem(Material.EMERALD, "§a§l➕ Adicionar Horário",
+        inv.setItem(28, createItem(template.getMaterial("confirm_button"), "§a§l➕ Adicionar Horário",
             "§8§m──────────────────────",
             "§7Digite no formato §fHH:MM",
             "§7",
@@ -173,20 +175,20 @@ public class AutoRestartMenu extends BaseMenu {
             times.isEmpty() ? "§7Nenhum horário para limpar" : "§e➜ Clique para limpar"));
         
         
-        ItemStack sideBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        ItemStack sideBorder = createItem(template.getMaterial("side_border"), " ");
         for (int i = 9; i < 45; i += 9) inv.setItem(i + 8, sideBorder);
         
         
-        ItemStack filler = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        ItemStack filler = createItem(template.getMaterial("filler"), " ");
         int[] fillerSlots = {9, 13, 14, 15, 16, 17, 18, 26, 27, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44};
         for (int slot : fillerSlots) inv.setItem(slot, filler);
         
         
-        ItemStack footerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
+        ItemStack footerBorder = createItem(template.getMaterial("footer_border"), " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, footerBorder);
         
         
-        inv.setItem(45, createItem(Material.BOOK, "§e§l📊 Estatísticas",
+        inv.setItem(45, createItem(template.getMaterial("title_icon"), "§e§l📊 Estatísticas",
             "§8§m──────────────────────",
             "§7Status do AutoRestart:",
             "§7",
@@ -197,7 +199,7 @@ public class AutoRestartMenu extends BaseMenu {
             "§8§m──────────────────────"));
         
         
-        inv.setItem(46, createItem(Material.KNOWLEDGE_BOOK, "§b§l❓ Ajuda",
+        inv.setItem(46, createItem(template.getMaterial("info_button"), "§b§l❓ Ajuda",
             "§8§m──────────────────────",
             "§7Como configurar:",
             "§7",
@@ -218,7 +220,7 @@ public class AutoRestartMenu extends BaseMenu {
             enabled ? "§e➜ Clique para testar" : "§cSistema desativado"));
         
         
-        inv.setItem(49, createItem(Material.ARROW, "§7§l« Voltar ao Menu",
+        inv.setItem(49, createItem(template.getMaterial("back_button"), "§7§l« Voltar ao Menu",
             "§8§m──────────────────────",
             "§7Retorna ao menu principal",
             "§7",
@@ -228,7 +230,7 @@ public class AutoRestartMenu extends BaseMenu {
             "§e➜ Clique para voltar"));
         
         
-        inv.setItem(50, createItem(Material.EMERALD, "§a§l✔ Aplicar Mudanças",
+        inv.setItem(50, createItem(template.getMaterial("confirm_button"), "§a§l✔ Aplicar Mudanças",
             "§8§m──────────────────────",
             "§7Salva e recarrega config",
             "§7",

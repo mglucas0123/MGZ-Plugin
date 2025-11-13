@@ -2,6 +2,7 @@ package mglucas0123.config.menus;
 
 import mglucas0123.Principal;
 import mglucas0123.config.ConfigEditorGUI;
+import mglucas0123.config.GUITemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,6 +30,7 @@ public class RandomTPMenu extends BaseMenu {
     
     @Override
     public void open(Player player) {
+        GUITemplate template = loadTemplate("RandomTP", 54);
         Inventory inv = Bukkit.createInventory(null, 54, "§8§l▬▬▬▬▬ §d§l🌀 Random TP 🌀 §8§l▬▬▬▬▬");
         
         String world = plugin.getConfig().getString("RTP.World", "world");
@@ -196,7 +198,7 @@ public class RandomTPMenu extends BaseMenu {
             "§2§l➤ Clique para aumentar"));
         
         
-        inv.setItem(45, createItem(Material.BOOK, "§e§l📊 Estatísticas",
+        inv.setItem(45, createItem(template.getMaterial("title_icon"), "§e§l📊 Estatísticas",
             "§8§m─────────────────────────────",
             "§7Dados sobre o sistema RTP",
             "§7",
@@ -211,7 +213,7 @@ public class RandomTPMenu extends BaseMenu {
             "§8▸ §fPossibilidades: §e~" + formatLargeNumber(calculatePossibilities(radius)),
             "§8§m─────────────────────────────"));
         
-        inv.setItem(46, createItem(Material.KNOWLEDGE_BOOK, "§b§l❓ Ajuda",
+        inv.setItem(46, createItem(template.getMaterial("info_button"), "§b§l❓ Ajuda",
             "§8§m─────────────────────────────",
             "§7Como funciona o Random TP",
             "§7",
@@ -238,13 +240,13 @@ public class RandomTPMenu extends BaseMenu {
             "§8§m─────────────────────────────",
             "§c§l➤ Clique para resetar"));
         
-        inv.setItem(49, createItem(Material.ARROW, "§7§l« Voltar",
+        inv.setItem(49, createItem(template.getMaterial("back_button"), "§7§l« Voltar",
             "§8§m─────────────────────────────",
             "§7Retornar ao menu principal",
             "§8§m─────────────────────────────",
             "§e§l➤ Clique para voltar"));
         
-        inv.setItem(50, createItem(Material.EMERALD, "§a§l✔ Aplicar Mudanças",
+        inv.setItem(50, createItem(template.getMaterial("confirm_button"), "§a§l✔ Aplicar Mudanças",
             "§8§m─────────────────────────────",
             "§7Salva todas as configurações",
             "§7",

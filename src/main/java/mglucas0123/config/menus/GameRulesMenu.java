@@ -2,6 +2,7 @@ package mglucas0123.config.menus;
 
 import mglucas0123.Principal;
 import mglucas0123.config.ConfigEditorGUI;
+import mglucas0123.config.GUITemplate;
 import mglucas0123.events.ServerControl;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,17 +27,18 @@ public class GameRulesMenu extends BaseMenu {
 
     @Override
     public void open(Player player) {
+        GUITemplate template = loadTemplate("GameRules", 54);
         Inventory inv = Bukkit.createInventory(null, 54, "§8§l▬▬▬▬▬ §6§l📜 GameRules 📜 §8§l▬▬▬▬▬");
 
-    ItemStack headerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
-    ItemStack footerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
-    ItemStack fillerItem = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
-    ItemStack backButtonItem = createItem(Material.ARROW, "§f§l« Voltar",
+    ItemStack headerBorder = createItem(template.getMaterial("header_border"), " ");
+    ItemStack footerBorder = createItem(template.getMaterial("footer_border"), " ");
+    ItemStack fillerItem = createItem(template.getMaterial("filler"), " ");
+    ItemStack backButtonItem = createItem(template.getMaterial("back_button"), "§f§l« Voltar",
         "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
         "§7Retornar ao menu principal",
         "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
         "§e§l➤ Clique para voltar");
-    ItemStack applyButtonItem = createItem(Material.EMERALD, "§e§l🔄 Aplicar Agora",
+    ItemStack applyButtonItem = createItem(template.getMaterial("confirm_button"), "§e§l🔄 Aplicar Agora",
         "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
         "§7Força aplicação de TODAS",
         "§7as regras em todos os mundos",
@@ -67,7 +69,7 @@ public class GameRulesMenu extends BaseMenu {
         for (int i = 0; i < 9; i++)
             inv.setItem(i, headerBorder);
 
-        inv.setItem(4, createItem(Material.BOOK, "§6§l📜 Sistema de GameRules",
+        inv.setItem(4, createItem(template.getMaterial("title_icon"), "§6§l📜 Sistema de GameRules",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§7Controle total das regras do servidor",
                 "§7",
@@ -79,7 +81,7 @@ public class GameRulesMenu extends BaseMenu {
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
 
         
-        inv.setItem(10, createItem(Material.PLAYER_HEAD, "§e§l👤 CATEGORIA: JOGADOR",
+        inv.setItem(10, createItem(template.getMaterial("category_player"), "§e§l👤 CATEGORIA: JOGADOR",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§7Regras relacionadas ao jogador",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
@@ -130,7 +132,7 @@ public class GameRulesMenu extends BaseMenu {
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
 
         
-        inv.setItem(19, createItem(Material.GRASS_BLOCK, "§a§l🌍 CATEGORIA: MUNDO",
+        inv.setItem(19, createItem(template.getMaterial("category_world"), "§a§l🌍 CATEGORIA: MUNDO",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§7Regras relacionadas ao ambiente",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
@@ -181,7 +183,7 @@ public class GameRulesMenu extends BaseMenu {
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
 
         
-        inv.setItem(28, createItem(Material.ZOMBIE_HEAD, "§c§l👹 CATEGORIA: MOBS",
+        inv.setItem(28, createItem(template.getMaterial("category_mobs"), "§c§l👹 CATEGORIA: MOBS",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§7Regras relacionadas a criaturas",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
@@ -220,7 +222,7 @@ public class GameRulesMenu extends BaseMenu {
                 "§8(Shift = ±8)  §8│  §b§l⚙ Shift+Dir: Mundos"));
 
         
-        inv.setItem(37, createItem(Material.REDSTONE, "§d§l⚙ CATEGORIA: SISTEMA",
+        inv.setItem(37, createItem(template.getMaterial("category_system"), "§d§l⚙ CATEGORIA: SISTEMA",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§7Regras avançadas do servidor",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
@@ -483,12 +485,13 @@ public class GameRulesMenu extends BaseMenu {
 
     
     private void openWorldListMenu(Player player, String ruleName) {
+        GUITemplate template = loadTemplate("GameRules", 45);
         Inventory inv = Bukkit.createInventory(null, 45, "§8§l▬ §b§l🌍 " + ruleName + " §8│ §7Mundos §8§l▬");
 
-        ItemStack headerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
-        ItemStack footerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
-        ItemStack sideBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
-        ItemStack fillerItem = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        ItemStack headerBorder = createItem(template.getMaterial("header_border"), " ");
+        ItemStack footerBorder = createItem(template.getMaterial("footer_border"), " ");
+        ItemStack sideBorder = createItem(template.getMaterial("side_border"), " ");
+        ItemStack fillerItem = createItem(template.getMaterial("filler"), " ");
 
         String basePath = "GameRules." + ruleName;
         boolean useWhitelist = plugin.getConfig().getBoolean(basePath + ".Whitelist", false);
