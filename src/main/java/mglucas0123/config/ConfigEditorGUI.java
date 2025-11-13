@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import mglucas0123.Principal;
-import mglucas0123.config.editor.EditorModeManager;
 
 
 public class ConfigEditorGUI {
@@ -145,26 +144,6 @@ public class ConfigEditorGUI {
             "§8▸ §7Mundos: §a" + org.bukkit.Bukkit.getWorlds().size(),
             "§8▸ §7Online: §a" + org.bukkit.Bukkit.getOnlinePlayers().size() + "§7/§a" + org.bukkit.Bukkit.getMaxPlayers(),
             "§8§m──────────────────────"));
-        
-        
-        boolean editorAtivo = EditorModeManager.isActive(player);
-        Material toggleIcon = editorAtivo ? Material.LIME_DYE : Material.GRAY_DYE;
-        String toggleStatus = editorAtivo ? "§a§lATIVO" : "§c§lDESATIVADO";
-        String toggleAction = editorAtivo ? "§e➜ Clique para DESATIVAR" : "§e➜ Clique para ATIVAR";
-        
-        inv.setItem(47, createItem(toggleIcon, "§6§l⚙ Modo Editor: " + toggleStatus,
-            "§8§m──────────────────────",
-            "§7Permite editar GUIs visualmente",
-            "§7",
-            "§f§lQuando ATIVO:",
-            "§8▸ §7Navegue pelos menus normalmente",
-            "§8▸ §7Arraste itens para substituir",
-            "§8▸ §7Bordas aplicam em todos os slots",
-            "§8▸ §7Salva automaticamente",
-            "§7",
-            editorAtivo ? "§a§l✓ Modo editor está ATIVO" : "§c§l✖ Modo editor está DESATIVADO",
-            "§8§m──────────────────────",
-            toggleAction));
         
         inv.setItem(48, createItem(Material.EMERALD, "§a§l✔ Recarregar Config",
             "§8§m──────────────────────",

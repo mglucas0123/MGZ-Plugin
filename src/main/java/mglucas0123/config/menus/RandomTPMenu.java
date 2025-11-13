@@ -2,7 +2,6 @@ package mglucas0123.config.menus;
 
 import mglucas0123.Principal;
 import mglucas0123.config.ConfigEditorGUI;
-import mglucas0123.config.editor.GUITemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,9 +30,6 @@ public class RandomTPMenu extends BaseMenu {
     @Override
     public void open(Player player) {
         Inventory inv = Bukkit.createInventory(null, 54, "§8§l▬▬▬▬▬ §d§l🌀 Random TP 🌀 §8§l▬▬▬▬▬");
-        
-        GUITemplate template = loadTemplate("RandomTPMenu", 54);
-        
         
         String world = plugin.getConfig().getString("RTP.World", "world");
         int radius = plugin.getConfig().getInt("RTP.Radius", 10000);

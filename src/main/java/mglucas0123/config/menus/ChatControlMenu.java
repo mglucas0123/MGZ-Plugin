@@ -2,7 +2,6 @@ package mglucas0123.config.menus;
 
 import mglucas0123.Principal;
 import mglucas0123.config.ConfigEditorGUI;
-import mglucas0123.config.editor.GUITemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,15 +22,13 @@ public class ChatControlMenu extends BaseMenu {
     public void open(Player player) {
         Inventory inv = Bukkit.createInventory(null, 54, "§8§l▬▬▬▬▬ §b§l💬 Chat Control 💬 §8§l▬▬▬▬▬");
         
-        GUITemplate template = loadTemplate("ChatControlMenu", 54);
-        
         boolean showDeath = plugin.getConfig().getBoolean("ChatControl.MostrarMorte");
         
         
-        ItemStack headerBorder = createItem(template.getMaterial("header_border"), "§8", "");
-        ItemStack footerBorder = createItem(template.getMaterial("footer_border"), "§8", "");
-        ItemStack sideBorder = createItem(template.getMaterial("side_border"), "§8", "");
-        ItemStack empty = createItem(template.getMaterial("filler"), "§7", "");
+        ItemStack headerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, "§8", "");
+        ItemStack footerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, "§8", "");
+        ItemStack sideBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, "§8", "");
+        ItemStack empty = createItem(Material.GRAY_STAINED_GLASS_PANE, "§7", "");
         
         
         for (int i = 0; i < 9; i++) inv.setItem(i, headerBorder);

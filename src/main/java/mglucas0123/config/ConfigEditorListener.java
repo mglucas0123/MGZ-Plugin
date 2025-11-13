@@ -2,7 +2,6 @@ package mglucas0123.config;
 
 import mglucas0123.Principal;
 import mglucas0123.config.menus.*;
-import mglucas0123.config.editor.*;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,14 +28,10 @@ public class ConfigEditorListener implements Listener {
     private EntradaSaidaMenu entradaSaidaMenu;
     private GameRulesMenu gameRulesMenu;
     
-    
-    private EditorClickHandler editorClickHandler;
-    
     public ConfigEditorListener(Principal plugin) {
         this.plugin = plugin;
         this.editorGUI = new ConfigEditorGUI(plugin);
         this.chatInputManager = new ChatInputManager(plugin, editorGUI);
-        this.editorClickHandler = new EditorClickHandler(plugin);
         
         this.autoSaveMenu = new AutoSaveMenu(plugin, editorGUI);
         this.autoRestartMenu = new AutoRestartMenu(plugin, editorGUI, chatInputManager);
@@ -68,21 +63,6 @@ public class ConfigEditorListener implements Listener {
             !title.contains("Placas") && !title.contains("ArmorStand") && 
             !title.contains("Armor Stand") && !title.contains("Join/Quit") && 
             !title.contains("Entrada/Saída")) return;
-        
-        boolean editorAtivo = EditorModeManager.isActive(player);
-        if (editorAtivo) {
-            boolean handled = editorClickHandler.handleEditorClick(event, player);
-            if (handled) {
-                return; 
-            }
-            
-            if (event.getClickedInventory() != null && event.getClickedInventory().equals(player.getInventory())) {
-                return; 
-            }
-            
-            
-        }
-        
         
         event.setCancelled(true);
         
@@ -124,11 +104,7 @@ public class ConfigEditorListener implements Listener {
     private void handleMainMenu(Player player, ItemStack clicked) {
         String displayName = clicked.getItemMeta().getDisplayName();
         
-        if (displayName.contains("Modo Editor")) {
-            
-            EditorModeManager.toggle(player);
-            editorGUI.openMainMenu(player); 
-        } else if (displayName.contains("AutoSave")) {
+        if (displayName.contains("AutoSave")) {
             autoSaveMenu.open(player);
         } else if (displayName.contains("AutoRestart")) {
             autoRestartMenu.open(player);

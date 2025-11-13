@@ -3,7 +3,6 @@ package mglucas0123.config.menus;
 import mglucas0123.Principal;
 import mglucas0123.config.ChatInputManager;
 import mglucas0123.config.ConfigEditorGUI;
-import mglucas0123.config.editor.GUITemplate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -34,8 +33,6 @@ public class AutoRestartMenu extends BaseMenu {
     public void open(Player player) {
         Inventory inv = Bukkit.createInventory(null, 54, "§0§l⬛ §c§l⚡ AutoRestart Control §0§l⬛");
         
-        GUITemplate template = loadTemplate("AutoRestartMenu", 54);
-        
         boolean enabled = plugin.getConfig().getBoolean("AutoRestart.Enabled");
         boolean countdown = plugin.getConfig().getBoolean("AutoRestart.EnableCountdown");
         List<String> times = plugin.getConfig().getStringList("AutoRestart.Times");
@@ -45,7 +42,7 @@ public class AutoRestartMenu extends BaseMenu {
         long minutesUntilRestart = getMinutesUntilRestart(times);
         
         
-        ItemStack headerBorder = createItem(template.getMaterial("header_border"), " ");
+        ItemStack headerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         ItemStack accentRed = createItem(Material.RED_STAINED_GLASS_PANE, "§c◆");
         
         for (int i = 0; i < 9; i++) {
@@ -180,12 +177,12 @@ public class AutoRestartMenu extends BaseMenu {
         for (int i = 9; i < 45; i += 9) inv.setItem(i + 8, sideBorder);
         
         
-        ItemStack filler = createItem(template.getMaterial("filler"), " ");
+        ItemStack filler = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         int[] fillerSlots = {9, 13, 14, 15, 16, 17, 18, 26, 27, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44};
         for (int slot : fillerSlots) inv.setItem(slot, filler);
         
         
-        ItemStack footerBorder = createItem(template.getMaterial("footer_border"), " ");
+        ItemStack footerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, footerBorder);
         
         
