@@ -15,15 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Menu de configuração das GameRules do servidor
- * 
- * Permite gerenciar:
- * - Regras booleanas (KeepInventory, MobGriefing, etc.)
- * - Regras numéricas (PlayersSleepingPercentage, RandomTickSpeed,
- * MaxEntityCramming)
- * - Whitelist de mundos por regra
- */
+
 public class GameRulesMenu extends BaseMenu {
 
     private ConfigEditorGUI editorGUI;
@@ -58,7 +50,7 @@ public class GameRulesMenu extends BaseMenu {
         "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
         "§a§l➤ Clique para aplicar");
 
-        // ===== REGRAS BOOLEANAS =====
+        
         boolean keepInv = plugin.getConfig().getBoolean("GameRules.KeepInventory.Enabled");
         boolean announceAdv = plugin.getConfig().getBoolean("GameRules.AnnounceAdvancements.Enabled");
         boolean mobGrief = plugin.getConfig().getBoolean("GameRules.MobGriefing.Enabled");
@@ -68,12 +60,12 @@ public class GameRulesMenu extends BaseMenu {
         boolean doRespawn = plugin.getConfig().getBoolean("GameRules.DoImmediateRespawn.Enabled");
         boolean doFire = plugin.getConfig().getBoolean("GameRules.DoFireTick.Enabled");
 
-        // ===== REGRAS NUMÉRICAS =====
+        
         int sleepPercent = plugin.getConfig().getInt("GameRules.PlayersSleepingPercentage.Value");
         int tickSpeed = plugin.getConfig().getInt("GameRules.RandomTickSpeed.Value");
         int maxCram = plugin.getConfig().getInt("GameRules.MaxEntityCramming.Value");
 
-        // ===== HEADER =====
+        
         for (int i = 0; i < 9; i++)
             inv.setItem(i, headerBorder);
 
@@ -88,7 +80,7 @@ public class GameRulesMenu extends BaseMenu {
                         doDaylight, doRespawn, doFire) + "/8",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
 
-        // ===== CATEGORIA: JOGADOR (ROW 1) =====
+        
         inv.setItem(10, createItem(template.getMaterial("category_player"), "§e§l👤 CATEGORIA: JOGADOR",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§7Regras relacionadas ao jogador",
@@ -139,7 +131,7 @@ public class GameRulesMenu extends BaseMenu {
                 "§8▸ §7Hardcore: §cNão recomendado",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
 
-        // ===== CATEGORIA: MUNDO (ROW 2) =====
+        
         inv.setItem(19, createItem(template.getMaterial("category_world"), "§a§l🌍 CATEGORIA: MUNDO",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§7Regras relacionadas ao ambiente",
@@ -190,7 +182,7 @@ public class GameRulesMenu extends BaseMenu {
                 "§8▸ §7Build/Lobby: §cDesativado (tempo fixo)",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
 
-        // ===== CATEGORIA: MOBS (ROW 3) =====
+        
         inv.setItem(28, createItem(template.getMaterial("category_mobs"), "§c§l👹 CATEGORIA: MOBS",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§7Regras relacionadas a criaturas",
@@ -229,7 +221,7 @@ public class GameRulesMenu extends BaseMenu {
                 "§c§l◀ Esq §f-2  §8│  §a§l▶ Dir §f+2",
                 "§8(Shift = ±8)  §8│  §b§l⚙ Shift+Dir: Mundos"));
 
-        // ===== CATEGORIA: SISTEMA (ROW 4) =====
+        
         inv.setItem(37, createItem(template.getMaterial("category_system"), "§d§l⚙ CATEGORIA: SISTEMA",
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§7Regras avançadas do servidor",
@@ -286,7 +278,7 @@ public class GameRulesMenu extends BaseMenu {
                 "§c§l◀ Esq §f-5  §8│  §a§l▶ Dir §f+5",
                 "§8(Shift = ±10)  §8│  §b§l⚙ Shift+Dir: Mundos"));
 
-        // ===== FOOTER =====
+        
         for (int i = 45; i < 54; i++)
             inv.setItem(i, footerBorder);
 
@@ -294,7 +286,7 @@ public class GameRulesMenu extends BaseMenu {
 
     inv.setItem(53, applyButtonItem);
 
-        // ===== PREENCHER ESPAÇOS VAZIOS =====
+        
         int[] fillerSlots = { 9, 14, 15, 16, 17, 18, 23, 24, 25, 26, 27, 31, 32, 33, 34, 35, 36, 41, 42, 43, 44 };
         for (int slot : fillerSlots)
         inv.setItem(slot, fillerItem);
@@ -308,7 +300,7 @@ public class GameRulesMenu extends BaseMenu {
         boolean isRightClick = event.isRightClick();
         boolean isShift = event.isShiftClick();
 
-        // ===== APLICAR AGORA =====
+        
         if (displayName.contains("Aplicar Agora")) {
             ServerControl serverControl = new ServerControl(plugin);
             serverControl.applyGameRulesToAllWorlds();
@@ -318,8 +310,7 @@ public class GameRulesMenu extends BaseMenu {
             return;
         }
 
-        // ===== REGRAS BOOLEANAS (Esquerda = Toggle, Direita = Mundos) =====
-
+        
         if (displayName.contains("Keep Inventory")) {
             if (isLeftClick)
                 toggleBooleanRule("KeepInventory", player);
@@ -362,9 +353,7 @@ public class GameRulesMenu extends BaseMenu {
                 openWorldListMenu(player, "DoFireTick");
         }
 
-        // ===== REGRAS NUMÉRICAS (Esquerda/Direita = Ajustar, Shift+Direita = Mundos)
-        // =====
-
+        
         else if (displayName.contains("Players Sleeping")) {
             if (isShift && isRightClick) {
                 openWorldListMenu(player, "PlayersSleepingPercentage");
@@ -391,11 +380,7 @@ public class GameRulesMenu extends BaseMenu {
         }
     }
 
-    // ===== MÉTODOS AUXILIARES =====
-
-    /**
-     * Conta quantas regras booleanas estão ativas
-     */
+    
     private int countActiveRules(boolean... rules) {
         int count = 0;
         for (boolean rule : rules) {
@@ -405,18 +390,15 @@ public class GameRulesMenu extends BaseMenu {
         return count;
     }
 
-    /**
-     * Cria um item de toggle com suporte a gerenciamento de mundos
-     * Adiciona brilho se estiver ativo
-     */
+    
     private ItemStack createToggleItemWithWorlds(Material material, String name, boolean isActive, String... lore) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
-        // Nome
+        
         meta.setDisplayName(name);
 
-        // Lore
+        
         List<String> loreList = new ArrayList<>();
         for (String line : lore) {
             loreList.add(line);
@@ -425,7 +407,7 @@ public class GameRulesMenu extends BaseMenu {
         loreList.add("§e§l➤ Esq§7: Alternar  §8│  §b§l➤ Dir§7: Mundos");
         meta.setLore(loreList);
 
-        // Adicionar brilho se ativo
+        
         if (isActive) {
             meta.addEnchant(org.bukkit.enchantments.Enchantment.DURABILITY, 1, true);
             meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);
@@ -435,26 +417,23 @@ public class GameRulesMenu extends BaseMenu {
         return item;
     }
 
-    /**
-     * Cria um item numérico com suporte a gerenciamento de mundos
-     * Mostra o valor atual e controles de ajuste
-     */
+    
     private ItemStack createNumericItemWithWorlds(Material material, String name, int value, String... lore) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
-        // Nome com valor
+        
         meta.setDisplayName(name + " §8│ §f" + value);
 
-        // Lore - as duas últimas linhas são os controles de ajuste
+        
         List<String> loreList = new ArrayList<>();
 
-        // Adicionar todas as linhas de lore (incluindo os controles)
+        
         for (String line : lore) {
             loreList.add(line);
         }
 
-        // Adicionar hint de mundos por último
+        
         loreList.add("§8(Shift = ±valor)  §8│  §b§l⚙ Shift+Dir§7: Mundos");
 
         meta.setLore(loreList);
@@ -462,9 +441,7 @@ public class GameRulesMenu extends BaseMenu {
         return item;
     }
 
-    /**
-     * Alterna o valor de uma GameRule booleana
-     */
+    
     private void toggleBooleanRule(String ruleName, Player player) {
         String path = "GameRules." + ruleName + ".Enabled";
         boolean current = plugin.getConfig().getBoolean(path);
@@ -478,9 +455,7 @@ public class GameRulesMenu extends BaseMenu {
         open(player);
     }
 
-    /**
-     * Ajusta o valor de uma GameRule numérica
-     */
+    
     private void adjustNumericRule(String ruleName, Player player, boolean isLeftClick, boolean isRightClick,
             boolean isShift, int normalChange, int shiftChange, int min, int max) {
         String path = "GameRules." + ruleName + ".Value";
@@ -508,9 +483,7 @@ public class GameRulesMenu extends BaseMenu {
         open(player);
     }
 
-    /**
-     * Abre o menu de gerenciamento de mundos para uma GameRule específica
-     */
+    
     private void openWorldListMenu(Player player, String ruleName) {
         Inventory inv = Bukkit.createInventory(null, 45, "§8§l▬ §b§l🌍 " + ruleName + " §8│ §7Mundos §8§l▬");
 
@@ -524,7 +497,7 @@ public class GameRulesMenu extends BaseMenu {
         boolean useWhitelist = plugin.getConfig().getBoolean(basePath + ".Whitelist", false);
         java.util.List<String> worldList = plugin.getConfig().getStringList(basePath + ".Worlds");
 
-        // ===== HEADER - Modo Whitelist =====
+        
         for (int i = 0; i < 9; i++)
             inv.setItem(i, headerBorder);
 
@@ -543,19 +516,19 @@ public class GameRulesMenu extends BaseMenu {
                 "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
                 "§e§l➤ Clique para alternar modo"));
 
-        // ===== MUNDOS CARREGADOS (2 linhas centrais) =====
+        
         java.util.List<org.bukkit.World> worlds = Bukkit.getWorlds();
-        int slot = 10; // Começa na linha 2, slot central
+        int slot = 10; 
         int worldCount = 0;
 
         for (org.bukkit.World world : worlds) {
             if (worldCount >= 18)
-                break; // Máximo de 18 mundos (2 linhas completas)
+                break; 
 
             String worldName = world.getName();
             boolean isInList = worldList.contains(worldName);
 
-            // Escolher ícone baseado no tipo de mundo
+            
             Material icon;
             if (isInList) {
                 icon = Material.LIME_CONCRETE;
@@ -585,14 +558,14 @@ public class GameRulesMenu extends BaseMenu {
             slot++;
             worldCount++;
 
-            // Pular slots das bordas (colunas 0 e 8)
+            
             if (slot % 9 == 0)
-                slot += 1; // Pula coluna 0 da próxima linha
+                slot += 1; 
             if (slot % 9 == 8)
-                slot += 2; // Pula coluna 8 e vai pra próxima linha
+                slot += 2; 
         }
 
-        // ===== FOOTER =====
+        
         for (int i = 36; i < 45; i++)
             inv.setItem(i, footerBorder);
 

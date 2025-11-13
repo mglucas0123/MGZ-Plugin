@@ -27,17 +27,17 @@ public class ChatControlMenu extends BaseMenu {
         
         boolean showDeath = plugin.getConfig().getBoolean("ChatControl.MostrarMorte");
         
-        // ===== BORDAS =====
+        
         ItemStack headerBorder = createItem(template.getMaterial("header_border"), "§8", "");
         ItemStack footerBorder = createItem(template.getMaterial("footer_border"), "§8", "");
         ItemStack sideBorder = createItem(template.getMaterial("side_border"), "§8", "");
         ItemStack empty = createItem(template.getMaterial("filler"), "§7", "");
         
-        // Bordas superiores e inferiores
+        
         for (int i = 0; i < 9; i++) inv.setItem(i, headerBorder);
         for (int i = 45; i < 54; i++) inv.setItem(i, footerBorder);
         
-        // Bordas laterais
+        
         inv.setItem(9, sideBorder);
         inv.setItem(18, sideBorder);
         inv.setItem(27, sideBorder);
@@ -47,7 +47,7 @@ public class ChatControlMenu extends BaseMenu {
         inv.setItem(35, sideBorder);
         inv.setItem(44, sideBorder);
         
-        // ===== SEÇÃO 1: CONTROLE DE MENSAGENS =====
+        
         inv.setItem(10, createItem(Material.WRITABLE_BOOK, "§b§l📝 CONTROLE DE MENSAGENS",
             "§8§m─────────────────────"));
         
@@ -68,7 +68,7 @@ public class ChatControlMenu extends BaseMenu {
             "§8§m───────────────────────",
             "§e§l➤ Clique para alternar"));
         
-        // ===== SEÇÃO 2: INFORMAÇÕES =====
+        
         inv.setItem(19, createItem(Material.KNOWLEDGE_BOOK, "§9§l📖 INFORMAÇÕES",
             "§8§m─────────────────────"));
         
@@ -95,14 +95,14 @@ public class ChatControlMenu extends BaseMenu {
             "§8§m───────────────────────",
             "§7Configurações aplicadas com sucesso"));
         
-        // ===== BOTÃO VOLTAR =====
+        
         inv.setItem(49, createItem(Material.ARROW, "§7§l« Voltar",
             "§8§m───────────────────────",
             "§7Retornar ao menu principal",
             "§8§m───────────────────────",
             "§e§l➤ Clique para voltar"));
         
-        // Preencher espaços vazios
+        
         for (int i = 1; i < 8; i++) inv.setItem(i, headerBorder);
         for (int i = 14; i < 17; i++) inv.setItem(i, empty);
         for (int i = 22; i < 26; i++) inv.setItem(i, empty);

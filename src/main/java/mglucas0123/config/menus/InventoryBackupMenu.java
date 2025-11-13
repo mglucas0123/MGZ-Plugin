@@ -34,7 +34,7 @@ public class InventoryBackupMenu extends BaseMenu {
         boolean onQuit = plugin.getConfig().getBoolean("InventoryBackup.BackupOnQuit");
         boolean onDeath = plugin.getConfig().getBoolean("InventoryBackup.BackupOnDeath");
         
-        // ===== HEADER =====
+        
         ItemStack headerBorder = createItem(Material.CYAN_STAINED_GLASS_PANE, " ");
         for (int i = 0; i < 9; i++) inv.setItem(i, headerBorder);
         
@@ -48,7 +48,7 @@ public class InventoryBackupMenu extends BaseMenu {
             "§8▸ §7Eventos ativos: §e" + countActiveEvents(onJoin, onQuit, onDeath) + "/3",
             "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
         
-        // ===== ROW 1: SISTEMA PRINCIPAL =====
+        
         inv.setItem(11, createToggleItem(
             Material.CHEST,
             "§6§l⚙ Sistema Principal",
@@ -65,15 +65,15 @@ public class InventoryBackupMenu extends BaseMenu {
             "§8▸ §7Restauração individual",
             "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
         
-        // ===== ROW 2: PRESETS DE INTERVALO (5 opções rápidas) =====
-        int[] presetIntervals = {300, 600, 900, 1800, 3600}; // 5min, 10min, 15min, 30min, 1h
+        
+        int[] presetIntervals = {300, 600, 900, 1800, 3600}; 
         String[] presetNames = {"5 min", "10 min", "15 min", "30 min", "1 hora"};
         Material[] presetMaterials = {
-            Material.LIME_DYE,      // 5min - Verde (rápido)
-            Material.YELLOW_DYE,    // 10min - Amarelo (balanceado)
-            Material.ORANGE_DYE,    // 15min - Laranja (moderado)
-            Material.RED_DYE,       // 30min - Vermelho (lento)
-            Material.PURPLE_DYE     // 1h - Roxo (muito lento)
+            Material.LIME_DYE,      
+            Material.YELLOW_DYE,    
+            Material.ORANGE_DYE,    
+            Material.RED_DYE,       
+            Material.PURPLE_DYE     
         };
         String[][] presetDescriptions = {
             {"§a§lRÁPIDO", "§7Ideal para:", "§8▸ §7Servidor PvP intenso", "§8▸ §7Alto risco de perda"},
@@ -93,7 +93,7 @@ public class InventoryBackupMenu extends BaseMenu {
             ));
         }
         
-        // ===== ROW 3: AJUSTES FINOS + MÁXIMO DE BACKUPS =====
+        
         inv.setItem(28, createItem(Material.REDSTONE, "§c§l⏴ Diminuir Intervalo",
             "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
             "§7Reduz o tempo entre backups",
@@ -147,7 +147,7 @@ public class InventoryBackupMenu extends BaseMenu {
             "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━",
             "§e§l➤ Clique para resetar"));
         
-        // ===== ROW 4: EVENTOS DE BACKUP =====
+        
         inv.setItem(37, createToggleItem(
             onJoin ? Material.LIME_WOOL : Material.RED_WOOL,
             "§a§l⬇ Backup ao Entrar (Join)",
@@ -214,7 +214,7 @@ public class InventoryBackupMenu extends BaseMenu {
             "§8▸ §750 jogadores: §e~" + (estimateStoragePerPlayer(maxBackups) * 50) + " MB",
             "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
         
-        // ===== FOOTER =====
+        
         ItemStack footerBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, footerBorder);
         
@@ -240,7 +240,7 @@ public class InventoryBackupMenu extends BaseMenu {
             "§8▸ §e/playerdata delete <jogador> <#> §7- Deleta backup",
             "§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━"));
         
-        // ===== PREENCHER ESPAÇOS VAZIOS =====
+        
         ItemStack filler = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         int[] fillerSlots = {9, 10, 12, 13, 14, 15, 16, 17, 18, 24, 25, 26, 27, 30, 33, 34, 35, 36, 40, 42, 43, 44};
         for (int slot : fillerSlots) inv.setItem(slot, filler);
@@ -251,7 +251,7 @@ public class InventoryBackupMenu extends BaseMenu {
     public void handleClick(Player player, ItemStack clicked, InventoryClickEvent event) {
         String displayName = clicked.getItemMeta().getDisplayName();
         
-        // ===== PRESETS DE INTERVALO (identificação pelo displayName exato) =====
+        
         if (displayName.equals("§6§l⏱ 5 min")) {
             plugin.getConfig().set("InventoryBackup.AutoBackupInterval", 300);
             plugin.saveConfig();
@@ -279,7 +279,7 @@ public class InventoryBackupMenu extends BaseMenu {
             open(player);
         }
         
-        // ===== AJUSTES FINOS =====
+        
         else if (displayName.contains("Diminuir Intervalo")) {
             int current = plugin.getConfig().getInt("InventoryBackup.AutoBackupInterval");
             int newValue = Math.max(60, current - 60);
@@ -296,7 +296,7 @@ public class InventoryBackupMenu extends BaseMenu {
             open(player);
         }
         
-        // ===== MÁXIMO DE BACKUPS =====
+        
         else if (displayName.contains("Máximo de Backups")) {
             int current = plugin.getConfig().getInt("InventoryBackup.MaxBackupsPerPlayer");
             int newValue;
@@ -314,7 +314,7 @@ public class InventoryBackupMenu extends BaseMenu {
             open(player);
         }
         
-        // ===== RESETAR PADRÕES =====
+        
         else if (displayName.contains("Resetar Padrões")) {
             plugin.getConfig().set("InventoryBackup.AutoBackupInterval", 600);
             plugin.getConfig().set("InventoryBackup.MaxBackupsPerPlayer", 10);
@@ -329,7 +329,7 @@ public class InventoryBackupMenu extends BaseMenu {
             open(player);
         }
         
-        // ===== EVENTOS =====
+        
         else if (displayName.contains("Backup ao Entrar")) {
             boolean current = plugin.getConfig().getBoolean("InventoryBackup.BackupOnJoin");
             plugin.getConfig().set("InventoryBackup.BackupOnJoin", !current);
@@ -350,19 +350,13 @@ public class InventoryBackupMenu extends BaseMenu {
             open(player);
         }
         
-        // ===== VOLTAR =====
+        
         else if (displayName.contains("Voltar")) {
             editorGUI.openMainMenu(player);
         }
     }
     
-    // ===== MÉTODOS AUXILIARES =====
     
-    /**
-     * Formata intervalo em segundos para formato legível
-     * @param seconds Segundos
-     * @return String formatada (ex: "5min", "1h 30min")
-     */
     private String formatInterval(int seconds) {
         if (seconds < 60) {
             return seconds + "s";
@@ -383,13 +377,7 @@ public class InventoryBackupMenu extends BaseMenu {
         }
     }
     
-    /**
-     * Conta quantos eventos estão ativos
-     * @param onJoin Join ativo
-     * @param onQuit Quit ativo
-     * @param onDeath Death ativo
-     * @return Número de eventos ativos
-     */
+    
     private int countActiveEvents(boolean onJoin, boolean onQuit, boolean onDeath) {
         int count = 0;
         if (onJoin) count++;
@@ -398,28 +386,16 @@ public class InventoryBackupMenu extends BaseMenu {
         return count;
     }
     
-    /**
-     * Estima espaço de armazenamento por jogador
-     * @param maxBackups Número máximo de backups
-     * @return Espaço estimado em MB
-     */
+    
     private double estimateStoragePerPlayer(int maxBackups) {
-        // Estimativa: ~50KB por backup de inventário completo (JSON comprimido)
-        double bytesPerBackup = 50 * 1024; // 50KB
+        
+        double bytesPerBackup = 50 * 1024; 
         double totalBytes = bytesPerBackup * maxBackups;
         double megabytes = totalBytes / (1024 * 1024);
-        return Math.round(megabytes * 10.0) / 10.0; // 1 casa decimal
+        return Math.round(megabytes * 10.0) / 10.0; 
     }
     
-    /**
-     * Cria item de preset de intervalo com glow se ativo
-     * @param material Material do item
-     * @param name Nome do preset
-     * @param presetInterval Intervalo do preset
-     * @param isActive Se é o preset ativo
-     * @param descriptions Linhas de descrição
-     * @return ItemStack configurado
-     */
+    
     private ItemStack createPresetIntervalItem(Material material, String name, int presetInterval, boolean isActive, String... descriptions) {
         List<String> lore = new ArrayList<>();
         lore.add("§8§m━━━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -451,7 +427,7 @@ public class InventoryBackupMenu extends BaseMenu {
         meta.setDisplayName("§6§l⏱ " + name);
         meta.setLore(lore);
         
-        // Glow se for o preset ativo
+        
         if (isActive) {
             meta.addEnchant(Enchantment.DURABILITY, 1, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -461,13 +437,9 @@ public class InventoryBackupMenu extends BaseMenu {
         return item;
     }
     
-    /**
-     * Estima quantos backups serão criados por dia
-     * @param intervalSeconds Intervalo em segundos
-     * @return Número de backups estimados por dia
-     */
+    
     private int estimateBackupsPerDay(int intervalSeconds) {
-        int secondsPerDay = 24 * 60 * 60; // 86400 segundos
+        int secondsPerDay = 24 * 60 * 60; 
         return secondsPerDay / intervalSeconds;
     }
 }

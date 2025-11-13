@@ -18,16 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * AutoRestartMenu - Timeline Visual e Controle Avançado
- * 
- * REDESIGN UX:
- * - Timeline visual de horários (24h)
- * - Próximo restart destacado com contagem regressiva
- * - Edição granular (remover qualquer horário)
- * - Configuração de avisos (tempos personalizados)
- * - Status em tempo real
- */
+
 public class AutoRestartMenu extends BaseMenu {
     
     private ConfigEditorGUI editorGUI;
@@ -49,11 +40,11 @@ public class AutoRestartMenu extends BaseMenu {
         boolean countdown = plugin.getConfig().getBoolean("AutoRestart.EnableCountdown");
         List<String> times = plugin.getConfig().getStringList("AutoRestart.Times");
         
-        // Calcular próximo restart e tempo restante
+        
         String nextRestart = getNextRestartTime(times);
         long minutesUntilRestart = getMinutesUntilRestart(times);
         
-        // === HEADER ===
+        
         ItemStack headerBorder = createItem(template.getMaterial("header_border"), " ");
         ItemStack accentRed = createItem(Material.RED_STAINED_GLASS_PANE, "§c◆");
         
@@ -62,7 +53,7 @@ public class AutoRestartMenu extends BaseMenu {
             else inv.setItem(i, headerBorder);
         }
         
-        // Info principal com tempo real
+        
         String statusLine;
         if (!enabled) {
             statusLine = "§c✖ Sistema desativado";
@@ -83,7 +74,7 @@ public class AutoRestartMenu extends BaseMenu {
             "§8▸ " + statusLine,
             "§8§m──────────────────────"));
         
-        // === CONTROLE PRINCIPAL (Linha 1) ===
+        
         inv.setItem(10, createModuleItem(
             enabled ? Material.REDSTONE : Material.REPEATER,
             "§c§l⚡ Sistema Principal",
@@ -108,12 +99,11 @@ public class AutoRestartMenu extends BaseMenu {
             "Ex: 10min, 5min, 1min antes",
             "Clique para personalizar"));
         
-        // === TIMELINE VISUAL (Linha 2) ===
-        // Ordenar horários para exibição
+        
         List<String> sortedTimes = new ArrayList<>(times);
         Collections.sort(sortedTimes);
         
-        // Exibir até 6 horários na timeline
+        
         for (int i = 0; i < 6; i++) {
             int slot = 19 + i;
             
@@ -123,7 +113,7 @@ public class AutoRestartMenu extends BaseMenu {
                 
                 inv.setItem(slot, createTimelineItem(time, isNext, i + 1));
             } else {
-                // Slot vazio para adicionar horário
+                
                 inv.setItem(slot, createItem(Material.LIGHT_GRAY_STAINED_GLASS_PANE, 
                     "§7§l+ Slot Vazio",
                     "§8§m──────────────────────",
@@ -134,7 +124,7 @@ public class AutoRestartMenu extends BaseMenu {
             }
         }
         
-        // Se há mais de 6 horários, mostrar indicador
+        
         if (sortedTimes.size() > 6) {
             inv.setItem(25, createItem(Material.ARROW, "§e§l▼ Mais Horários",
                 "§8§m──────────────────────",
@@ -146,7 +136,7 @@ public class AutoRestartMenu extends BaseMenu {
                 "§8§m──────────────────────"));
         }
         
-        // === AÇÕES RÁPIDAS (Linha 3) ===
+        
         inv.setItem(28, createItem(Material.EMERALD, "§a§l➕ Adicionar Horário",
             "§8§m──────────────────────",
             "§7Digite no formato §fHH:MM",
@@ -185,20 +175,20 @@ public class AutoRestartMenu extends BaseMenu {
             "§8§m──────────────────────",
             times.isEmpty() ? "§7Nenhum horário para limpar" : "§e➜ Clique para limpar"));
         
-        // === BORDAS LATERAIS ===
+        
         ItemStack sideBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 9; i < 45; i += 9) inv.setItem(i + 8, sideBorder);
         
-        // === ESPAÇOS VAZIOS ===
+        
         ItemStack filler = createItem(template.getMaterial("filler"), " ");
         int[] fillerSlots = {9, 13, 14, 15, 16, 17, 18, 26, 27, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44};
         for (int slot : fillerSlots) inv.setItem(slot, filler);
         
-        // === FOOTER ===
+        
         ItemStack footerBorder = createItem(template.getMaterial("footer_border"), " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, footerBorder);
         
-        // Estatísticas
+        
         inv.setItem(45, createItem(Material.BOOK, "§e§l📊 Estatísticas",
             "§8§m──────────────────────",
             "§7Status do AutoRestart:",
@@ -209,7 +199,7 @@ public class AutoRestartMenu extends BaseMenu {
             "§8▸ §fTempo: " + (minutesUntilRestart >= 0 ? "§e" + minutesUntilRestart + "min" : "§c-"),
             "§8§m──────────────────────"));
         
-        // Ajuda
+        
         inv.setItem(46, createItem(Material.KNOWLEDGE_BOOK, "§b§l❓ Ajuda",
             "§8§m──────────────────────",
             "§7Como configurar:",
@@ -220,7 +210,7 @@ public class AutoRestartMenu extends BaseMenu {
             "§a4. §7Servidor reinicia automaticamente",
             "§8§m──────────────────────"));
         
-        // Testar agora
+        
         inv.setItem(48, createItem(Material.TNT, "§6§l⚠ Testar Restart",
             "§8§m──────────────────────",
             "§7Simula um restart AGORA",
@@ -230,7 +220,7 @@ public class AutoRestartMenu extends BaseMenu {
             "§8§m──────────────────────",
             enabled ? "§e➜ Clique para testar" : "§cSistema desativado"));
         
-        // Voltar
+        
         inv.setItem(49, createItem(Material.ARROW, "§7§l« Voltar ao Menu",
             "§8§m──────────────────────",
             "§7Retorna ao menu principal",
@@ -240,7 +230,7 @@ public class AutoRestartMenu extends BaseMenu {
             "§8§m──────────────────────",
             "§e➜ Clique para voltar"));
         
-        // Reload
+        
         inv.setItem(50, createItem(Material.EMERALD, "§a§l✔ Aplicar Mudanças",
             "§8§m──────────────────────",
             "§7Salva e recarrega config",
@@ -256,9 +246,7 @@ public class AutoRestartMenu extends BaseMenu {
         player.openInventory(inv);
     }
     
-    /**
-     * Calcula o próximo horário de restart
-     */
+    
     private String getNextRestartTime(List<String> times) {
         if (times.isEmpty()) return null;
         
@@ -276,7 +264,7 @@ public class AutoRestartMenu extends BaseMenu {
                 }
             }
             
-            // Se nenhum horário futuro hoje, pegar o primeiro de amanhã
+            
             if (closest == null) {
                 closest = times.stream()
                     .map(t -> LocalTime.parse(t, DateTimeFormatter.ofPattern("HH:mm")))
@@ -290,9 +278,7 @@ public class AutoRestartMenu extends BaseMenu {
         }
     }
     
-    /**
-     * Calcula minutos até o próximo restart
-     */
+    
     private long getMinutesUntilRestart(List<String> times) {
         String next = getNextRestartTime(times);
         if (next == null) return -1;
@@ -303,9 +289,9 @@ public class AutoRestartMenu extends BaseMenu {
             
             long minutes = now.until(restart, ChronoUnit.MINUTES);
             
-            // Se negativo, é amanhã
+            
             if (minutes < 0) {
-                minutes = 1440 + minutes; // 24h em minutos
+                minutes = 1440 + minutes; 
             }
             
             return minutes;
@@ -314,9 +300,7 @@ public class AutoRestartMenu extends BaseMenu {
         }
     }
     
-    /**
-     * Cria item de horário na timeline
-     */
+    
     private ItemStack createTimelineItem(String time, boolean isNext, int position) {
         Material icon = isNext ? Material.CLOCK : Material.PAPER;
         String prefix = isNext ? "§e§l⏰" : "§7§l🕐";
@@ -365,9 +349,7 @@ public class AutoRestartMenu extends BaseMenu {
         return item;
     }
     
-    /**
-     * Gera lore para horários extras (quando há mais de 6)
-     */
+    
     private String getExtraTimesLore(List<String> sortedTimes) {
         StringBuilder sb = new StringBuilder();
         for (int i = 6; i < sortedTimes.size() && i < 12; i++) {
@@ -380,9 +362,7 @@ public class AutoRestartMenu extends BaseMenu {
         return sb.toString();
     }
     
-    /**
-     * Cria item de módulo com status visual
-     */
+    
     private ItemStack createModuleItem(Material icon, String name, boolean enabled, String description, String... info) {
         ItemStack item = new ItemStack(icon);
         org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
@@ -424,7 +404,7 @@ public class AutoRestartMenu extends BaseMenu {
     public void handleClick(Player player, ItemStack clicked, InventoryClickEvent event) {
         String displayName = clicked.getItemMeta().getDisplayName();
         
-        // Sistema Principal
+        
         if (displayName.contains("Sistema Principal")) {
             boolean current = plugin.getConfig().getBoolean("AutoRestart.Enabled");
             plugin.getConfig().set("AutoRestart.Enabled", !current);
@@ -432,7 +412,7 @@ public class AutoRestartMenu extends BaseMenu {
             player.sendMessage("§c§l⚡ §e[AutoRestart] §fSistema: " + (!current ? "§a§lATIVADO" : "§c§lDESATIVADO"));
             open(player);
         }
-        // Contagem Regressiva
+        
         else if (displayName.contains("Contagem Regressiva")) {
             boolean current = plugin.getConfig().getBoolean("AutoRestart.EnableCountdown");
             plugin.getConfig().set("AutoRestart.EnableCountdown", !current);
@@ -440,12 +420,12 @@ public class AutoRestartMenu extends BaseMenu {
             player.sendMessage("§e§l⏱ §e[AutoRestart] §fContagem: " + (!current ? "§a§lATIVADA" : "§c§lDESATIVADA"));
             open(player);
         }
-        // Tempos de Aviso (placeholder - pode implementar submenu)
+        
         else if (displayName.contains("Tempos de Aviso")) {
             player.sendMessage("§6§l📝 §e[AutoRestart] §7Recurso em desenvolvimento!");
             player.sendMessage("§7Configure os tempos em §econfig.yml §7→ §fAutoRestart.CountdownTimes");
         }
-        // Adicionar Horário
+        
         else if (displayName.contains("Adicionar Horário") || displayName.contains("Slot Vazio")) {
             List<String> times = plugin.getConfig().getStringList("AutoRestart.Times");
             
@@ -461,7 +441,7 @@ public class AutoRestartMenu extends BaseMenu {
                     return;
                 }
                 
-                // Validar formato HH:MM
+                
                 if (!input.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
                     player.sendMessage("§c✗ [AutoRestart] Formato inválido!");
                     player.sendMessage("§7Use o formato §fHH:MM §7(ex: §f05:30§7, §f14:00§7)");
@@ -469,14 +449,14 @@ public class AutoRestartMenu extends BaseMenu {
                     return;
                 }
                 
-                // Verificar duplicatas
+                
                 if (times.contains(input)) {
                     player.sendMessage("§c✗ [AutoRestart] Este horário já existe!");
                     open(player);
                     return;
                 }
                 
-                // Adicionar horário
+                
                 times.add(input);
                 plugin.getConfig().set("AutoRestart.Times", times);
                 plugin.saveConfig();
@@ -486,9 +466,9 @@ public class AutoRestartMenu extends BaseMenu {
                 open(player);
             });
         }
-        // Remover horário específico da timeline
+        
         else if (displayName.contains("🕐") || displayName.contains("⏰")) {
-            // Extrair horário do nome (formato: "§7§l🕐 §f14:00" ou "§e§l⏰ §f03:00 §a§l← PRÓXIMO")
+            
             String timeToRemove = extractTimeFromDisplayName(displayName);
             
             if (timeToRemove != null) {
@@ -506,7 +486,7 @@ public class AutoRestartMenu extends BaseMenu {
                 }
             }
         }
-        // Lista Completa
+        
         else if (displayName.contains("Lista Completa")) {
             List<String> times = plugin.getConfig().getStringList("AutoRestart.Times");
             
@@ -534,7 +514,7 @@ public class AutoRestartMenu extends BaseMenu {
             
             player.sendMessage("§c§l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         }
-        // Limpar Todos
+        
         else if (displayName.contains("Limpar Todos")) {
             List<String> times = plugin.getConfig().getStringList("AutoRestart.Times");
             
@@ -552,7 +532,7 @@ public class AutoRestartMenu extends BaseMenu {
             player.sendMessage("§7Total removido: §e" + count);
             open(player);
         }
-        // Testar Restart
+        
         else if (displayName.contains("Testar Restart")) {
             boolean enabled = plugin.getConfig().getBoolean("AutoRestart.Enabled");
             
@@ -566,35 +546,31 @@ public class AutoRestartMenu extends BaseMenu {
             
             player.closeInventory();
             
-            // Agendar restart de teste (simulação)
+            
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 Bukkit.broadcastMessage("§c§l⚠ [AutoRestart] §7Restart de TESTE executado!");
                 Bukkit.broadcastMessage("§7Em ambiente real, o servidor reiniciaria agora.");
-            }, 100L); // 5 segundos
+            }, 100L); 
         }
-        // Aplicar Mudanças
+        
         else if (displayName.contains("Aplicar Mudanças")) {
             plugin.saveConfig();
             player.sendMessage("§a§l✔ §e[AutoRestart] §fConfigurações aplicadas com sucesso!");
             open(player);
         }
-        // Voltar
+        
         else if (displayName.contains("Voltar")) {
             editorGUI.openMainMenu(player);
         }
     }
     
-    /**
-     * Extrai o horário do displayName de um item da timeline
-     * Ex: "§7§l🕐 §f14:00" → "14:00"
-     * Ex: "§e§l⏰ §f03:00 §a§l← PRÓXIMO" → "03:00"
-     */
+    
     private String extractTimeFromDisplayName(String displayName) {
         try {
-            // Remove cores e símbolos
+            
             String clean = displayName.replaceAll("§[0-9a-fk-or]", "");
             
-            // Busca padrão HH:MM
+            
             java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\\d{1,2}:\\d{2}");
             java.util.regex.Matcher matcher = pattern.matcher(clean);
             
@@ -602,7 +578,7 @@ public class AutoRestartMenu extends BaseMenu {
                 return matcher.group();
             }
         } catch (Exception e) {
-            // Ignora erros
+            
         }
         return null;
     }

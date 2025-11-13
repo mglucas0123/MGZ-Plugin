@@ -237,7 +237,7 @@ public enum RegionProfile {
     }
     
     public Map<RegionFlag, Boolean> getFlags() {
-        // Criar região temporária para extrair flags
+        
         Region temp = new Region("temp", "world", null, null);
         applyFlags(temp);
         return temp.getFlags();

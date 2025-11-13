@@ -19,44 +19,41 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Classe para armazenar backup COMPLETO da player data
- * Inclui: inventário, armadura, XP, vida, fome, efeitos, localização, ender chest, etc.
- */
+
 public class InventoryBackup implements Serializable {
 
-    private static final long serialVersionUID = 3L; // Atualizado para v3
+    private static final long serialVersionUID = 3L; 
     
-    // Identificação
+    
     private final String playerName;
     private final String playerUUID;
     private final long timestamp;
     
-    // Inventário
+    
     private final Map<Integer, Map<String, Object>> serializedContents;
     private final List<Map<String, Object>> serializedArmorContents;
     private final Map<String, Object> serializedOffHand;
     private final int heldItemSlot;
     
-    // Ender Chest
+    
     private final Map<Integer, Map<String, Object>> serializedEnderChestContents;
     
-    // Experiência
+    
     private final int level;
     private final float exp;
     private final int totalExperience;
     
-    // Vida e Fome
+    
     private final double health;
     private final double maxHealth;
     private final int foodLevel;
     private final float saturation;
     private final float exhaustion;
     
-    // Efeitos de Poção
+    
     private final List<Map<String, Object>> serializedPotionEffects;
     
-    // Localização
+    
     private final String worldName;
     private final double x;
     private final double y;
@@ -64,42 +61,42 @@ public class InventoryBackup implements Serializable {
     private final float yaw;
     private final float pitch;
     
-    // Game Mode
+    
     private final GameMode gameMode;
     
-    // Voo (para criativo/espectador)
+    
     private final boolean allowFlight;
     private final boolean isFlying;
     
     public InventoryBackup(Player player) {
-        // Identificação
+        
         this.playerName = player.getName();
         this.playerUUID = player.getUniqueId().toString();
         this.timestamp = System.currentTimeMillis();
         
         PlayerInventory inventory = player.getInventory();
         
-        // ===== INVENTÁRIO =====
+        
         this.serializedContents = serializeItemMap(inventory.getContents());
 
-        // Armadura
+        
         this.serializedArmorContents = serializeItemList(inventory.getArmorContents());
 
-        // Mão secundária
+        
         this.serializedOffHand = serializeItem(inventory.getItemInOffHand());
         
-        // Slot selecionado
+        
         this.heldItemSlot = inventory.getHeldItemSlot();
         
-        // ===== ENDER CHEST =====
+        
         this.serializedEnderChestContents = serializeItemMap(player.getEnderChest().getContents());
         
-        // ===== EXPERIÊNCIA =====
+        
         this.level = player.getLevel();
         this.exp = player.getExp();
         this.totalExperience = player.getTotalExperience();
         
-        // ===== VIDA E FOME =====
+        
         this.health = player.getHealth();
     AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
     this.maxHealth = attribute != null ? attribute.getValue() : player.getHealth();
@@ -107,10 +104,10 @@ public class InventoryBackup implements Serializable {
         this.saturation = player.getSaturation();
         this.exhaustion = player.getExhaustion();
         
-        // ===== EFEITOS DE POÇÃO =====
+        
     this.serializedPotionEffects = serializePotionEffects(player.getActivePotionEffects());
         
-        // ===== LOCALIZAÇÃO =====
+        
         Location loc = player.getLocation();
         this.worldName = loc.getWorld().getName();
         this.x = loc.getX();
@@ -119,7 +116,7 @@ public class InventoryBackup implements Serializable {
         this.yaw = loc.getYaw();
         this.pitch = loc.getPitch();
         
-        // ===== GAME MODE E VOO =====
+        
         this.gameMode = player.getGameMode();
         this.allowFlight = player.getAllowFlight();
         this.isFlying = player.isFlying();
@@ -160,9 +157,7 @@ public class InventoryBackup implements Serializable {
         return heldItemSlot;
     }
     
-    /**
-     * Verifica se o inventário está vazio
-     */
+    
     public boolean isEmpty() {
         if (!serializedContents.isEmpty()) {
             return false;
@@ -177,9 +172,7 @@ public class InventoryBackup implements Serializable {
         return serializedOffHand == null;
     }
     
-    /**
-     * Conta quantos itens existem no backup
-     */
+    
     public int getItemCount() {
         int count = serializedContents.size();
 
@@ -196,16 +189,14 @@ public class InventoryBackup implements Serializable {
         return count;
     }
     
-    /**
-     * Restaura TODA a player data para um jogador
-     */
+    
     public void restore(Player player) {
         PlayerInventory inventory = player.getInventory();
         
-        // ===== INVENTÁRIO =====
+        
         inventory.clear();
         
-        // Restaurar itens
+        
         for (Map.Entry<Integer, Map<String, Object>> entry : serializedContents.entrySet()) {
             ItemStack item = deserializeItem(entry.getValue());
             if (item != null) {
@@ -213,10 +204,10 @@ public class InventoryBackup implements Serializable {
             }
         }
 
-        // Restaurar armadura
+        
         inventory.setArmorContents(deserializeItemList(serializedArmorContents));
 
-        // Restaurar mão secundária
+        
         if (serializedOffHand != null) {
             ItemStack offHandItem = deserializeItem(serializedOffHand);
             if (offHandItem != null) {
@@ -224,10 +215,10 @@ public class InventoryBackup implements Serializable {
             }
         }
         
-        // Restaurar slot selecionado
+        
         inventory.setHeldItemSlot(heldItemSlot);
         
-        // ===== ENDER CHEST =====
+        
         player.getEnderChest().clear();
         for (Map.Entry<Integer, Map<String, Object>> entry : serializedEnderChestContents.entrySet()) {
             ItemStack item = deserializeItem(entry.getValue());
@@ -236,12 +227,12 @@ public class InventoryBackup implements Serializable {
             }
         }
         
-        // ===== EXPERIÊNCIA =====
+        
         player.setLevel(level);
         player.setExp(exp);
         player.setTotalExperience(totalExperience);
         
-        // ===== VIDA E FOME =====
+        
     AttributeInstance playerAttribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
     double max = playerAttribute != null ? playerAttribute.getValue() : maxHealth;
     player.setHealth(Math.min(health, max));
@@ -249,12 +240,11 @@ public class InventoryBackup implements Serializable {
         player.setSaturation(saturation);
         player.setExhaustion(exhaustion);
         
-        // ===== EFEITOS DE POÇÃO =====
-        // Remover efeitos atuais
+        
         for (PotionEffect effect : player.getActivePotionEffects()) {
             player.removePotionEffect(effect.getType());
         }
-        // Aplicar efeitos salvos
+        
         for (Map<String, Object> effectData : serializedPotionEffects) {
             PotionEffect effect = deserializePotionEffect(effectData);
             if (effect != null) {
@@ -262,21 +252,19 @@ public class InventoryBackup implements Serializable {
             }
         }
         
-        // ===== GAME MODE E VOO =====
+        
         player.setGameMode(gameMode);
         player.setAllowFlight(allowFlight);
         player.setFlying(isFlying);
     }
     
-    /**
-     * Restaura apenas o inventário (compatibilidade com código antigo)
-     */
+    
     @Deprecated
     public void restore(PlayerInventory inventory) {
-        // Limpar inventário atual
+        
         inventory.clear();
         
-        // Restaurar itens
+        
         for (Map.Entry<Integer, Map<String, Object>> entry : serializedContents.entrySet()) {
             ItemStack item = deserializeItem(entry.getValue());
             if (item != null) {
@@ -284,10 +272,10 @@ public class InventoryBackup implements Serializable {
             }
         }
 
-        // Restaurar armadura
+        
         inventory.setArmorContents(deserializeItemList(serializedArmorContents));
 
-        // Restaurar mão secundária
+        
         if (serializedOffHand != null) {
             ItemStack offHandItem = deserializeItem(serializedOffHand);
             if (offHandItem != null) {
@@ -295,11 +283,10 @@ public class InventoryBackup implements Serializable {
             }
         }
         
-        // Restaurar slot selecionado
+        
         inventory.setHeldItemSlot(heldItemSlot);
     }
     
-    // ===== GETTERS PARA EXIBIÇÃO =====
     
     public int getLevel() {
         return level;

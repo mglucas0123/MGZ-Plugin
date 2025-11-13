@@ -27,15 +27,15 @@ public class PlacasMenu extends BaseMenu {
         boolean habilitado = plugin.getConfig().getBoolean("Placas.Habilitado");
         List<String> ids = plugin.getConfig().getStringList("Placas.Ids");
         
-        // ===== BORDAS =====
+        
         ItemStack border = createItem(Material.BLACK_STAINED_GLASS_PANE, "§8", "");
         ItemStack empty = createItem(Material.GRAY_STAINED_GLASS_PANE, "§7", "");
         
-        // Bordas superiores e inferiores
+        
         for (int i = 0; i < 9; i++) inv.setItem(i, border);
         for (int i = 45; i < 54; i++) inv.setItem(i, border);
         
-        // Bordas laterais
+        
         inv.setItem(9, border);
         inv.setItem(18, border);
         inv.setItem(27, border);
@@ -45,7 +45,7 @@ public class PlacasMenu extends BaseMenu {
         inv.setItem(35, border);
         inv.setItem(44, border);
         
-        // ===== SEÇÃO 1: SISTEMA =====
+        
         inv.setItem(10, createItem(Material.OAK_SIGN, "§6§l🛡 SISTEMA DE PROTEÇÃO",
             "§8§m─────────────────────"));
         
@@ -66,7 +66,7 @@ public class PlacasMenu extends BaseMenu {
             "§8§m───────────────────────",
             "§e§l➤ Clique para alternar"));
         
-        // ===== SEÇÃO 2: IDS BLOQUEADOS =====
+        
         inv.setItem(19, createItem(Material.WRITABLE_BOOK, "§c§l🚫 IDS BLOQUEADOS",
             "§8§m─────────────────────"));
         
@@ -85,7 +85,7 @@ public class PlacasMenu extends BaseMenu {
             "§8§m───────────────────────",
             "§7Edição manual necessária"));
         
-        // ===== SEÇÃO 3: INFORMAÇÕES =====
+        
         inv.setItem(28, createItem(Material.KNOWLEDGE_BOOK, "§b§l📖 INFORMAÇÕES",
             "§8§m─────────────────────"));
         
@@ -114,14 +114,14 @@ public class PlacasMenu extends BaseMenu {
             "§8§m───────────────────────",
             habilitado ? "§7Proteção ativa no servidor" : "§7Sistema desativado"));
         
-        // ===== BOTÃO VOLTAR =====
+        
         inv.setItem(49, createItem(Material.ARROW, "§7§l« Voltar",
             "§8§m───────────────────────",
             "§7Retornar ao menu principal",
             "§8§m───────────────────────",
             "§e§l➤ Clique para voltar"));
         
-        // Preencher espaços vazios
+        
         for (int i = 1; i < 8; i++) inv.setItem(i, border);
         for (int i = 14; i < 17; i++) inv.setItem(i, empty);
         for (int i = 22; i < 26; i++) inv.setItem(i, empty);

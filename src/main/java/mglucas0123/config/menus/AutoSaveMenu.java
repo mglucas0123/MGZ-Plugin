@@ -11,16 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-/**
- * AutoSaveMenu - Controle Avançado de Salvamento
- * 
- * REDESIGN UX:
- * - Estatísticas em tempo real (último/próximo save)
- * - Presets de intervalo (1min, 5min, 10min, 30min, custom)
- * - Teste instantâneo (forçar save agora)
- * - Controle de mensagens (broadcast, actionbar, nenhuma)
- * - Visual clean com feedback instantâneo
- */
+
 public class AutoSaveMenu extends BaseMenu {
     
     private ConfigEditorGUI editorGUI;
@@ -34,18 +25,18 @@ public class AutoSaveMenu extends BaseMenu {
     public void open(Player player) {
         Inventory inv = Bukkit.createInventory(null, 54, "§0§l⬛ §e§l⏱ AutoSave Control §0§l⬛");
         
-        // Carregar template
+        
         GUITemplate template = loadTemplate("AutoSaveMenu", 54);
         
         boolean enabled = plugin.getConfig().getBoolean("AutoSave.Enabled");
         int interval = plugin.getConfig().getInt("AutoSave.IntervalSeconds", 300);
         boolean broadcast = plugin.getConfig().getBoolean("AutoSave.BroadcastMessage");
         
-        // Calcular próximo save
+        
         int totalWorlds = Bukkit.getWorlds().size();
         String intervalFormatted = formatInterval(interval);
         
-        // === HEADER ===
+        
         ItemStack headerBorder = createItem(template.getMaterial("header_border"), " ");
         ItemStack accentYellow = createItem(Material.YELLOW_STAINED_GLASS_PANE, "§e◆");
         
@@ -54,7 +45,7 @@ public class AutoSaveMenu extends BaseMenu {
             else inv.setItem(i, headerBorder);
         }
         
-        // Info principal
+        
         inv.setItem(4, createItem(Material.CLOCK, "§e§l⏱ AutoSave Control",
             "§8§m──────────────────────",
             "§7Salvamento automático do servidor",
@@ -64,7 +55,7 @@ public class AutoSaveMenu extends BaseMenu {
             "§8▸ §7Mundos: §f" + totalWorlds,
             "§8§m──────────────────────"));
         
-        // === CONTROLE PRINCIPAL (Linha 1) ===
+        
         inv.setItem(10, createModuleItem(
             enabled ? Material.SUNFLOWER : Material.DEAD_BUSH,
             "§e§l⏱ Sistema Principal",
@@ -91,7 +82,7 @@ public class AutoSaveMenu extends BaseMenu {
             "§8§m──────────────────────",
             enabled ? "§e➜ Clique para salvar" : "§cSistema desativado"));
         
-        // === PRESETS DE INTERVALO (Linha 2) ===
+        
         int[] presets = {60, 180, 300, 600, 1800};
         String[] presetNames = {"1min", "3min", "5min", "10min", "30min"};
         Material[] presetIcons = {
@@ -115,7 +106,7 @@ public class AutoSaveMenu extends BaseMenu {
                 isActive));
         }
         
-        // === CONTROLE FINO (Linha 3) ===
+        
         inv.setItem(28, createItem(Material.RED_DYE, "§c§l« -60s",
             "§8§m──────────────────────",
             "§7Diminui intervalo em 60s",
@@ -162,20 +153,20 @@ public class AutoSaveMenu extends BaseMenu {
             "§8§m──────────────────────",
             "§e➜ Clique para aumentar"));
         
-        // === BORDAS LATERAIS ===
+        
         ItemStack sideBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 9; i < 45; i += 9) inv.setItem(i + 8, sideBorder);
         
-        // === ESPAÇOS VAZIOS ===
+        
         ItemStack filler = createItem(template.getMaterial("filler"), " ");
         int[] fillerSlots = {9, 13, 14, 15, 16, 17, 18, 24, 25, 26, 27, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44};
         for (int slot : fillerSlots) inv.setItem(slot, filler);
         
-        // === FOOTER ===
+        
         ItemStack footerBorder = createItem(template.getMaterial("footer_border"), " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, footerBorder);
         
-        // Estatísticas
+        
         inv.setItem(45, createItem(Material.BOOK, "§e§l📊 Estatísticas",
             "§8§m──────────────────────",
             "§7Status do AutoSave:",
@@ -186,7 +177,7 @@ public class AutoSaveMenu extends BaseMenu {
             "§8▸ §fBroadcast: " + (broadcast ? "§aSim" : "§cNão"),
             "§8§m──────────────────────"));
         
-        // Ajuda
+        
         inv.setItem(46, createItem(Material.KNOWLEDGE_BOOK, "§b§l❓ Ajuda",
             "§8§m──────────────────────",
             "§7Como configurar:",
@@ -197,7 +188,7 @@ public class AutoSaveMenu extends BaseMenu {
             "§a4. §7Teste com 'Forçar Save'",
             "§8§m──────────────────────"));
         
-        // Resetar
+        
         inv.setItem(48, createItem(Material.BARRIER, "§c§l⚠ Resetar Padrões",
             "§8§m──────────────────────",
             "§7Restaura configuração padrão",
@@ -208,7 +199,7 @@ public class AutoSaveMenu extends BaseMenu {
             "§8§m──────────────────────",
             "§e➜ Clique para resetar"));
         
-        // Voltar
+        
         inv.setItem(49, createItem(Material.ARROW, "§7§l« Voltar ao Menu",
             "§8§m──────────────────────",
             "§7Retorna ao menu principal",
@@ -218,7 +209,7 @@ public class AutoSaveMenu extends BaseMenu {
             "§8§m──────────────────────",
             "§e➜ Clique para voltar"));
         
-        // Aplicar
+        
         inv.setItem(50, createItem(Material.EMERALD, "§a§l✔ Aplicar Mudanças",
             "§8§m──────────────────────",
             "§7Salva e recarrega config",
@@ -234,10 +225,7 @@ public class AutoSaveMenu extends BaseMenu {
         player.openInventory(inv);
     }
     
-    /**
-     * Formata intervalo em formato legível
-     * Ex: 60 → "1min" | 300 → "5min" | 3600 → "1h"
-     */
+    
     private String formatInterval(int seconds) {
         if (seconds < 60) {
             return seconds + "s";
@@ -252,9 +240,7 @@ public class AutoSaveMenu extends BaseMenu {
         }
     }
     
-    /**
-     * Retorna nome do preset ou "Custom"
-     */
+    
     private String getPresetName(int interval) {
         switch (interval) {
             case 60: return "§f1 Minuto";
@@ -266,9 +252,7 @@ public class AutoSaveMenu extends BaseMenu {
         }
     }
     
-    /**
-     * Cria item de preset de intervalo
-     */
+    
     private ItemStack createPresetItem(Material icon, String name, int seconds, boolean isActive) {
         ItemStack item = new ItemStack(icon);
         org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
@@ -291,7 +275,7 @@ public class AutoSaveMenu extends BaseMenu {
         lore.add("§8▸ §fTempo: §e" + formatInterval(seconds));
         lore.add("§8▸ §fRecomendado para:");
         
-        // Recomendações baseadas no intervalo
+        
         switch (seconds) {
             case 60:
                 lore.add("§8  §7• Servidores pequenos");
@@ -330,9 +314,7 @@ public class AutoSaveMenu extends BaseMenu {
         return item;
     }
     
-    /**
-     * Cria item de módulo com status visual
-     */
+    
     private ItemStack createModuleItem(Material icon, String name, boolean enabled, String description, String... info) {
         ItemStack item = new ItemStack(icon);
         org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
@@ -374,7 +356,7 @@ public class AutoSaveMenu extends BaseMenu {
     public void handleClick(Player player, ItemStack clicked, InventoryClickEvent event) {
         String displayName = clicked.getItemMeta().getDisplayName();
         
-        // Sistema Principal
+        
         if (displayName.contains("Sistema Principal")) {
             boolean current = plugin.getConfig().getBoolean("AutoSave.Enabled");
             plugin.getConfig().set("AutoSave.Enabled", !current);
@@ -382,7 +364,7 @@ public class AutoSaveMenu extends BaseMenu {
             player.sendMessage("§e§l⏱ §6[AutoSave] §fSistema: " + (!current ? "§a§lATIVADO" : "§c§lDESATIVADO"));
             open(player);
         }
-        // Broadcast
+        
         else if (displayName.contains("Broadcast")) {
             boolean current = plugin.getConfig().getBoolean("AutoSave.BroadcastMessage");
             plugin.getConfig().set("AutoSave.BroadcastMessage", !current);
@@ -390,7 +372,7 @@ public class AutoSaveMenu extends BaseMenu {
             player.sendMessage("§6§l📢 §6[AutoSave] §fBroadcast: " + (!current ? "§a§lATIVADO" : "§c§lDESATIVADO"));
             open(player);
         }
-        // Forçar Save Agora
+        
         else if (displayName.contains("Forçar Save Agora")) {
             boolean enabled = plugin.getConfig().getBoolean("AutoSave.Enabled");
             
@@ -402,21 +384,21 @@ public class AutoSaveMenu extends BaseMenu {
             player.sendMessage("§a§l⚡ [AutoSave] §7Executando salvamento forçado...");
             player.closeInventory();
             
-            // Salvar todos os mundos
+            
             int worldCount = 0;
             for (World world : Bukkit.getWorlds()) {
                 world.save();
                 worldCount++;
             }
             
-            // Salvar jogadores
+            
             Bukkit.savePlayers();
             
             player.sendMessage("§a§l✔ [AutoSave] §fSalvamento concluído!");
             player.sendMessage("§7▸ §f" + worldCount + " mundo(s) salvos");
             player.sendMessage("§7▸ §f" + Bukkit.getOnlinePlayers().size() + " jogador(es) salvos");
         }
-        // Presets (detectar pelo nome: 1min, 3min, 5min, 10min, 30min)
+        
         else if (displayName.contains("1min") || displayName.contains("3min") || 
                  displayName.contains("5min") || displayName.contains("10min") || 
                  displayName.contains("30min")) {
@@ -435,7 +417,7 @@ public class AutoSaveMenu extends BaseMenu {
                 open(player);
             }
         }
-        // Ajustes manuais
+        
         else if (displayName.contains("-60s")) {
             int current = plugin.getConfig().getInt("AutoSave.IntervalSeconds");
             int newValue = Math.max(30, current - 60);
@@ -468,7 +450,7 @@ public class AutoSaveMenu extends BaseMenu {
             player.sendMessage("§e§l⏱ §6[AutoSave] §fIntervalo: §e" + newValue + "s §7(§f" + formatInterval(newValue) + "§7)");
             open(player);
         }
-        // Resetar Padrões
+        
         else if (displayName.contains("Resetar Padrões")) {
             plugin.getConfig().set("AutoSave.Enabled", true);
             plugin.getConfig().set("AutoSave.IntervalSeconds", 300);
@@ -481,13 +463,13 @@ public class AutoSaveMenu extends BaseMenu {
             player.sendMessage("§7▸ Sistema: §aAtivado");
             open(player);
         }
-        // Aplicar Mudanças
+        
         else if (displayName.contains("Aplicar Mudanças")) {
             plugin.saveConfig();
             player.sendMessage("§a§l✔ §6[AutoSave] §fConfigurações aplicadas com sucesso!");
             open(player);
         }
-        // Voltar
+        
         else if (displayName.contains("Voltar")) {
             editorGUI.openMainMenu(player);
         }

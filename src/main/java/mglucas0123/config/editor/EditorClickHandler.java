@@ -11,10 +11,7 @@ import mglucas0123.Principal;
 
 import java.util.List;
 
-/**
- * Intercepta cliques em GUIs quando o modo editor está ativo.
- * Permite substituir itens arrastando do inventário.
- */
+
 public class EditorClickHandler {
     
     private Principal plugin;
@@ -23,13 +20,10 @@ public class EditorClickHandler {
         this.plugin = plugin;
     }
     
-    /**
-     * Processa clique no modo editor
-     * @return true se foi processado como edição, false se deve seguir fluxo normal
-     */
+    
     public boolean handleEditorClick(InventoryClickEvent event, Player player) {
         
-        // Só processa se modo editor estiver ativo
+        
         if (!EditorModeManager.isActive(player)) {
             return false;
         }
@@ -40,31 +34,30 @@ public class EditorClickHandler {
         Inventory topInv = event.getView().getTopInventory();
         String title = event.getView().getTitle();
         
-        // Extrair nome do menu do título
-        String menuName = extractMenuName(title);
-        if (menuName == null) return false; // Não é um menu editável
         
-        // Se clicou no inventário do jogador (bottom), PERMITIR para pegar itens
+        String menuName = extractMenuName(title);
+        if (menuName == null) return false; 
+        
+        
         if (clickedInv.equals(player.getInventory())) {
-            // Permite pegar itens do próprio inventário
-            return false; // Não cancela, deixa pegar normalmente
+            
+            return false; 
         }
         
-        // Clicou no menu (top inventory) - verificar se está editando
+        
         int slot = event.getSlot();
         ItemStack cursor = event.getCursor();
         
-        // Debug
+        
         plugin.getLogger().info("[Editor] Click detectado: slot=" + slot + ", cursor=" + (cursor != null ? cursor.getType() : "null"));
         
-        // Se não tem item no cursor, jogador está apenas navegando -> deixar fluxo normal
+        
         if (cursor == null || cursor.getType() == Material.AIR) {
             plugin.getLogger().info("[Editor] Cursor vazio, navegação normal");
             return false;
         }
         
-        // Tem item no cursor - está tentando SUBSTITUIR
-        // Verificar se o slot é editável
+        
         boolean editable = PatternDetector.isEditable(slot, topInv);
         String pattern = PatternDetector.detectPattern(slot, topInv.getSize());
         
@@ -76,28 +69,26 @@ public class EditorClickHandler {
             return true;
         }
         
-        // Aplicar mudança
+        
         Material newMaterial = cursor.getType();
     applyMaterialChange(topInv, menuName, pattern, newMaterial, player, slot);
         
-        // Cancelar evento para não mover o item do cursor
+        
         event.setCancelled(true);
         
         return true;
     }
     
-    /**
-     * Aplica mudança de material em um padrão
-     */
+    
     private void applyMaterialChange(Inventory inv, String menuName, String pattern, Material newMaterial, Player player, int clickedSlot) {
         
-        // Carregar template
+        
         GUITemplate template = GUITemplate.load(menuName, plugin.getConfig());
         if (template == null) {
             template = new GUITemplate(menuName, inv.getSize());
         }
         
-        // Obter item original para preservar título/lore
+        
         int[] patternSlots = PatternDetector.getSlotsForPattern(pattern, inv.getSize());
         if (patternSlots.length == 0) {
             patternSlots = new int[]{clickedSlot};
@@ -116,7 +107,7 @@ public class EditorClickHandler {
             }
         }
         
-        // Criar novo item com material atualizado
+        
         ItemStack newItem = new ItemStack(newMaterial);
         ItemMeta meta = newItem.getItemMeta();
         meta.setDisplayName(displayName);
@@ -125,31 +116,29 @@ public class EditorClickHandler {
         }
         newItem.setItemMeta(meta);
         
-        // Aplicar em todos os slots do padrão
+        
         for (int slot : patternSlots) {
             inv.setItem(slot, newItem.clone());
         }
         
-        // Salvar no template
+        
         template.setMaterial(pattern, newMaterial);
         template.save(plugin.getConfig());
         plugin.saveConfig();
         
-        // Debug log
+        
         plugin.getLogger().info("[Editor] Template salvo: " + menuName + " | " + pattern + " = " + newMaterial.name());
         
-        // Feedback visual
+        
         String patternName = getPatternDisplayName(pattern);
         player.sendMessage("§a§l✓ " + patternName + " §aatualizado para §f" + formatMaterialName(newMaterial));
         player.sendMessage("§7└─ §7Aplicado em §e" + patternSlots.length + " slots");
         player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 2.0f);
     }
     
-    /**
-     * Extrai nome do menu do título
-     */
+    
     private String extractMenuName(String title) {
-        // Detectar menus conhecidos
+        
         if (title.contains("GameRules")) return "GameRulesMenu";
         if (title.contains("AutoSave")) return "AutoSaveMenu";
         if (title.contains("AutoRestart")) return "AutoRestartMenu";
@@ -162,12 +151,10 @@ public class EditorClickHandler {
         if (title.contains("Entrada") || title.contains("Saída") || title.contains("Join") || title.contains("Quit")) return "EntradaSaidaMenu";
         if (title.contains("MGZ") || title.contains("Config")) return "MainMenu";
         
-        return null; // Menu não editável
+        return null; 
     }
     
-    /**
-     * Nome amigável do padrão
-     */
+    
     private String getPatternDisplayName(String pattern) {
         switch (pattern) {
             case "header_border": return "§dBorda Superior";
@@ -183,9 +170,7 @@ public class EditorClickHandler {
         }
     }
     
-    /**
-     * Formata nome do material (GRASS_BLOCK -> Grass Block)
-     */
+    
     private String formatMaterialName(Material material) {
         String name = material.name().replace("_", " ");
         String[] words = name.split(" ");

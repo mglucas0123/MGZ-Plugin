@@ -334,7 +334,7 @@ public class RegionCommand implements CommandExecutor {
     private void showInfo(Player player, String name) {
         Region region;
         
-        // Verificar se é região global
+        
         if (name.equalsIgnoreCase("__global__")) {
             String worldName = player.getWorld().getName();
             region = regionManager.getGlobalRegion(worldName);
@@ -449,11 +449,7 @@ public class RegionCommand implements CommandExecutor {
     }
     
     private void handleBlockItemSubcommand(Player player, String[] args) {
-        // args[0] = "blockitem"
-        // args[1] = região
-        // args[2] = subcomando (add/remove/list/whitelist)
-        // args[3] = item (opcional para add/remove) OU subcomando da whitelist (add/remove/list)
-        // args[4] = item (para whitelist add/remove)
+        
         
         String regionName = args[1];
         String subCommand = args[2].toLowerCase();
@@ -517,7 +513,7 @@ public class RegionCommand implements CommandExecutor {
             material = item.getType().name();
         } else {
             material = itemName.toUpperCase();
-            // Validar se o material existe
+            
             try {
                 Material.valueOf(material);
             } catch (IllegalArgumentException e) {
@@ -612,8 +608,7 @@ public class RegionCommand implements CommandExecutor {
     }
     
     private void handleWhitelistSubcommand(Player player, String regionName, String[] args) {
-        // args[3] = subcomando (add/remove/list)
-        // args[4] = item (para add/remove)
+        
         
         String whitelistCommand = args[3].toLowerCase();
         
@@ -660,7 +655,7 @@ public class RegionCommand implements CommandExecutor {
             material = item.getType().name();
         } else {
             material = itemName.toUpperCase();
-            // Validar se o material existe
+            
             try {
                 Material.valueOf(material);
             } catch (IllegalArgumentException e) {

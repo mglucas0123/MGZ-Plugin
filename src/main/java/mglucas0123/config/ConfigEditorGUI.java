@@ -10,16 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import mglucas0123.Principal;
 import mglucas0123.config.editor.EditorModeManager;
 
-/**
- * ConfigEditorGUI - Menu Principal Redesenhado
- * 
- * FILOSOFIA UX (Jogador experiente de 25 anos):
- * - Informação visual imediata (status verde/vermelho)
- * - Layout em GRID organizado (3x3 por categoria)
- * - Contexto rápido sem abrir submenus
- * - Design clean, moderno e profissional
- * - Enchant glow nos sistemas ativos
- */
+
 public class ConfigEditorGUI {
     
     private Principal plugin;
@@ -31,12 +22,7 @@ public class ConfigEditorGUI {
     public void openMainMenu(Player player) {
         Inventory inv = Bukkit.createInventory(null, 54, "§0§l⬛ §8§l▎§6§l⚙ MGZ §8§l⚙ §8§l▎§0§l⬛");
         
-        // ===== LAYOUT INFORMATIVO =====
-        // Linha 0: Header com informações
-        // Linhas 1-4: Grid 3x3 organizado por categoria
-        // Linha 5: Footer com ações
         
-        // === HEADER (Linha 0) ===
         ItemStack headerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         ItemStack accentGold = createItem(Material.ORANGE_STAINED_GLASS_PANE, "§6◆");
         
@@ -45,7 +31,7 @@ public class ConfigEditorGUI {
             else inv.setItem(i, headerBorder);
         }
         
-        // Info do servidor no header
+        
         inv.setItem(4, createItem(Material.NETHER_STAR, "§6§l⚙ MGZ Configuration",
             "§8§m──────────────────────",
             "§7Painel de controle completo",
@@ -54,7 +40,7 @@ public class ConfigEditorGUI {
             "§8▸ §7Alterações salvas automaticamente",
             "§8§m──────────────────────"));
         
-        // === GRID 3x3 - CATEGORIA: AUTOMAÇÃO (Verde) ===
+        
         inv.setItem(10, createModuleItem(Material.CLOCK, 
             "§a§l⏱ AutoSave", 
             plugin.getConfig().getBoolean("AutoSave.Enabled"),
@@ -76,7 +62,7 @@ public class ConfigEditorGUI {
             "Máx: " + plugin.getConfig().getInt("InventoryBackup.MaxBackupsPerPlayer") + " backups/jogador",
             plugin.getConfig().getInt("InventoryBackup.IntervalSeconds") + "s entre backups"));
         
-        // === GRID 3x3 - CATEGORIA: GAMEPLAY (Amarelo/Laranja) ===
+        
         inv.setItem(19, createModuleItem(Material.ENCHANTED_BOOK, 
             "§e§l📜 GameRules", 
             true,
@@ -98,7 +84,7 @@ public class ConfigEditorGUI {
             plugin.getConfig().getBoolean("CancelRain.Enabled") ? "Sistema ativo" : "Sistema inativo",
             "Previne chuva/tempestade"));
         
-        // === GRID 3x3 - CATEGORIA: COMUNICAÇÃO (Azul) ===
+        
         inv.setItem(28, createModuleItem(Material.WRITABLE_BOOK, 
             "§9§l💬 Chat Control", 
             plugin.getConfig().getBoolean("ChatControl.ShowDeathMessages"),
@@ -113,7 +99,7 @@ public class ConfigEditorGUI {
             "Join: " + (plugin.getConfig().getString("JoinQuit.JoinMessage", "").isEmpty() ? "Padrão" : "Custom"),
             "Quit: " + (plugin.getConfig().getString("JoinQuit.QuitMessage", "").isEmpty() ? "Padrão" : "Custom")));
         
-        // === GRID 3x3 - CATEGORIA: PROTEÇÃO (Roxo) ===
+        
         inv.setItem(30, createModuleItem(Material.OAK_SIGN, 
             "§7§l🪧 Bloqueio de Placas", 
             plugin.getConfig().getBoolean("SignBlock.Enabled"),
@@ -128,20 +114,20 @@ public class ConfigEditorGUI {
             plugin.getConfig().getBoolean("ArmorStand.AllowArmorStands") ? "Permitido" : "Bloqueado",
             "Gerenciamento de entidades"));
         
-        // === BORDAS LATERAIS ===
-        ItemStack sideBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
-        for (int i = 9; i < 45; i += 9) inv.setItem(i + 8, sideBorder); // Direita
         
-        // === ESPAÇOS VAZIOS (Design clean) ===
+        ItemStack sideBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
+        for (int i = 9; i < 45; i += 9) inv.setItem(i + 8, sideBorder); 
+        
+        
         ItemStack filler = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         int[] fillerSlots = {9, 13, 14, 15, 16, 17, 18, 22, 23, 24, 25, 26, 27, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44};
         for (int slot : fillerSlots) inv.setItem(slot, filler);
         
-        // === FOOTER - Informações e Ações ===
+        
         ItemStack footerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         for (int i = 45; i < 54; i++) inv.setItem(i, headerBorder);
         
-        // Informação útil
+        
         inv.setItem(45, createItem(Material.BOOKSHELF, "§e§l📚 Documentação",
             "§8§m──────────────────────",
             "§7Como usar este painel:",
@@ -160,7 +146,7 @@ public class ConfigEditorGUI {
             "§8▸ §7Online: §a" + org.bukkit.Bukkit.getOnlinePlayers().size() + "§7/§a" + org.bukkit.Bukkit.getMaxPlayers(),
             "§8§m──────────────────────"));
         
-        // Ações principais - MODO EDITOR TOGGLE
+        
         boolean editorAtivo = EditorModeManager.isActive(player);
         Material toggleIcon = editorAtivo ? Material.LIME_DYE : Material.GRAY_DYE;
         String toggleStatus = editorAtivo ? "§a§lATIVO" : "§c§lDESATIVADO";
@@ -207,32 +193,29 @@ public class ConfigEditorGUI {
             "§8§m──────────────────────",
             "§e➜ Clique para sair"));
         
-        // Slots restantes
+        
         int[] emptyFooter = {51, 52, 53};
         for (int slot : emptyFooter) inv.setItem(slot, headerBorder);
         
         player.openInventory(inv);
     }
     
-    /**
-     * Cria um item de módulo com status visual
-     * ENCHANT GLOW = Sistema ativo
-     */
+    
     private ItemStack createModuleItem(Material icon, String name, boolean enabled, String description, String... info) {
         ItemStack item = new ItemStack(icon);
         ItemMeta meta = item.getItemMeta();
         
-        // Nome com indicador de status
+        
         String status = enabled ? "§a●" : "§c●";
         meta.setDisplayName(status + " " + name);
         
-        // Lore informativa
+        
         java.util.List<String> lore = new java.util.ArrayList<>();
         lore.add("§8§m──────────────────────");
         lore.add("§7" + description);
         lore.add("");
         
-        // Status visual destacado
+        
         if (enabled) {
             lore.add("§a§l✓ SISTEMA ATIVO");
         } else {
@@ -240,7 +223,7 @@ public class ConfigEditorGUI {
         }
         lore.add("");
         
-        // Informações adicionais
+        
         for (String line : info) {
             lore.add("§8▸ §f" + line);
         }
@@ -251,7 +234,7 @@ public class ConfigEditorGUI {
         
         meta.setLore(lore);
         
-        // Adicionar enchant glow se ativo
+        
         if (enabled) {
             meta.addEnchant(org.bukkit.enchantments.Enchantment.LUCK, 1, true);
             meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS);

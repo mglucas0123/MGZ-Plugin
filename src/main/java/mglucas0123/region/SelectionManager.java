@@ -85,10 +85,10 @@ public class SelectionManager {
         public void expandVertical() {
             if (!isComplete()) return;
             
-            // Expande pos1 para Y mínimo
+            
             pos1.setY(pos1.getWorld().getMinHeight());
             
-            // Expande pos2 para Y máximo
+            
             pos2.setY(pos2.getWorld().getMaxHeight() - 1);
         }
     }

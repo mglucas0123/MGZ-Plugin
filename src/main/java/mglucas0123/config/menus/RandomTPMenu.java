@@ -34,12 +34,12 @@ public class RandomTPMenu extends BaseMenu {
         
         GUITemplate template = loadTemplate("RandomTPMenu", 54);
         
-        // Configurações
+        
         String world = plugin.getConfig().getString("RTP.World", "world");
         int radius = plugin.getConfig().getInt("RTP.Radius", 10000);
         int delay = plugin.getConfig().getInt("Delays.RTP", 60);
         
-        // ===== HEADER: STATUS GERAL =====
+        
         ItemStack header = createItem(Material.ENDER_PEARL, "§d§l🌀 RANDOM TELEPORT",
             "§8§m─────────────────────────────",
             "§7Sistema de teleporte aleatório",
@@ -52,12 +52,12 @@ public class RandomTPMenu extends BaseMenu {
             "§8§m─────────────────────────────");
         inv.setItem(4, header);
         
-        // ===== ACCENT BORDERS =====
+        
         ItemStack accentGlass = createItem(Material.PURPLE_STAINED_GLASS_PANE, "§d", "");
         inv.setItem(3, accentGlass);
         inv.setItem(5, accentGlass);
         
-        // ===== LINHA 1: CONTROLES PRINCIPAIS =====
+        
         inv.setItem(10, createItem(Material.GRASS_BLOCK, "§e§l� Mundo de Destino",
             "§8§m─────────────────────────────",
             "§7Escolha o mundo para Random TP",
@@ -99,7 +99,7 @@ public class RandomTPMenu extends BaseMenu {
             "§8§m─────────────────────────────",
             "§e§l➤ Clique para testar"));
         
-        // ===== LINHA 2: PRESETS DE RAIO =====
+        
         inv.setItem(19, createPresetRadiusItem(5000, radius, Material.WOODEN_SWORD,
             "§e§l📏 Raio: 5.000 blocos",
             "§7Área pequena, rápida exploração",
@@ -150,7 +150,7 @@ public class RandomTPMenu extends BaseMenu {
             "§8▸ §fRecomendado: Networks",
             "§8▸ §fExploração extrema"));
         
-        // ===== LINHA 3: AJUSTES FINOS =====
+        
         inv.setItem(28, createItem(Material.RED_CONCRETE, "§c§l➖ -5.000 blocos",
             "§8§m─────────────────────────────",
             "§7Diminui o raio em 5.000",
@@ -199,7 +199,7 @@ public class RandomTPMenu extends BaseMenu {
             "§8§m─────────────────────────────",
             "§2§l➤ Clique para aumentar"));
         
-        // ===== FOOTER: AÇÕES =====
+        
         inv.setItem(45, createItem(Material.BOOK, "§e§l📊 Estatísticas",
             "§8§m─────────────────────────────",
             "§7Dados sobre o sistema RTP",
@@ -259,7 +259,7 @@ public class RandomTPMenu extends BaseMenu {
             "§8§m─────────────────────────────",
             "§a§l➤ Clique para salvar"));
         
-        // ===== BORDAS DECORATIVAS =====
+        
         ItemStack blackGlass = createItem(Material.BLACK_STAINED_GLASS_PANE, "§8", "");
         for (int i = 0; i < 9; i++) if (inv.getItem(i) == null) inv.setItem(i, blackGlass);
         for (int i = 45; i < 54; i++) if (inv.getItem(i) == null) inv.setItem(i, blackGlass);
@@ -271,7 +271,7 @@ public class RandomTPMenu extends BaseMenu {
     public void handleClick(Player player, ItemStack clicked, InventoryClickEvent event) {
         String displayName = clicked.getItemMeta().getDisplayName();
         
-        // ===== MUNDO DE DESTINO =====
+        
         if (displayName.contains("Mundo de Destino")) {
             String newWorld;
             if (event.isShiftClick()) {
@@ -287,7 +287,7 @@ public class RandomTPMenu extends BaseMenu {
             player.sendMessage("§d§l🌀 §e[Random TP] §7Mundo alterado para: §f" + newWorld);
             open(player);
             
-        // ===== DELAY DO COMANDO =====
+        
         } else if (displayName.contains("Delay do Comando")) {
             int current = plugin.getConfig().getInt("Delays.RTP");
             int newValue;
@@ -303,7 +303,7 @@ public class RandomTPMenu extends BaseMenu {
             player.sendMessage("§d§l🌀 §e[Random TP] §7Delay alterado para: §f" + newValue + "s");
             open(player);
             
-        // ===== TESTAR RANDOM TP =====
+        
         } else if (displayName.contains("Testar Random TP")) {
             int radius = plugin.getConfig().getInt("RTP.Radius", 10000);
             String worldName = plugin.getConfig().getString("RTP.World", "world");
@@ -327,7 +327,7 @@ public class RandomTPMenu extends BaseMenu {
             player.sendMessage("§7Distância: §f" + formatDistance((int) Math.sqrt(x*x + z*z)));
             player.closeInventory();
             
-        // ===== PRESETS DE RAIO =====
+        
         } else if (displayName.contains("Raio: 5.000 blocos")) {
             setRadius(player, 5000);
         } else if (displayName.contains("Raio: 10.000 blocos")) {
@@ -339,7 +339,7 @@ public class RandomTPMenu extends BaseMenu {
         } else if (displayName.contains("Raio: 100.000 blocos")) {
             setRadius(player, 100000);
             
-        // ===== AJUSTES FINOS =====
+        
         } else if (displayName.contains("-5.000 blocos")) {
             int current = plugin.getConfig().getInt("RTP.Radius", 10000);
             int newValue = Math.max(1000, current - 5000);
@@ -360,7 +360,7 @@ public class RandomTPMenu extends BaseMenu {
             int newValue = current + 5000;
             setRadius(player, newValue);
             
-        // ===== RESETAR PADRÕES =====
+        
         } else if (displayName.contains("Resetar Padrões")) {
             plugin.getConfig().set("RTP.World", "world");
             plugin.getConfig().set("RTP.Radius", 10000);
@@ -370,23 +370,19 @@ public class RandomTPMenu extends BaseMenu {
             player.sendMessage("§d§l🌀 §e[Random TP] §7Configurações resetadas para padrão!");
             open(player);
             
-        // ===== APLICAR MUDANÇAS =====
+        
         } else if (displayName.contains("Aplicar Mudanças")) {
             plugin.saveConfig();
             player.sendMessage("§d§l🌀 §a[Random TP] §7Configurações salvas com sucesso!");
             player.sendMessage("§7Sistema atualizado e pronto para uso.");
             
-        // ===== VOLTAR =====
+        
         } else if (displayName.contains("Voltar")) {
             editorGUI.openMainMenu(player);
         }
     }
     
-    // ===== MÉTODOS AUXILIARES =====
     
-    /**
-     * Define o raio de teleporte e atualiza o menu
-     */
     private void setRadius(Player player, int radius) {
         plugin.getConfig().set("RTP.Radius", radius);
         plugin.saveConfig();
@@ -396,10 +392,7 @@ public class RandomTPMenu extends BaseMenu {
         open(player);
     }
     
-    /**
-     * Formata distância em blocos para leitura humana
-     * Exemplo: 5000 -> "5.000 blocos", 10000 -> "10.000 blocos"
-     */
+    
     private String formatDistance(int blocks) {
         if (blocks >= 1000) {
             return String.format("%,d blocos", blocks).replace(',', '.');
@@ -407,10 +400,7 @@ public class RandomTPMenu extends BaseMenu {
         return blocks + " blocos";
     }
     
-    /**
-     * Calcula e formata a área total do círculo de teleporte
-     * Fórmula: π × raio²
-     */
+    
     private String formatArea(int radius) {
         double area = Math.PI * radius * radius;
         
@@ -423,25 +413,19 @@ public class RandomTPMenu extends BaseMenu {
         }
     }
     
-    /**
-     * Estima quantos teleportes por dia são possíveis com o delay configurado
-     */
+    
     private int estimateTPsPerDay(int delaySeconds) {
-        if (delaySeconds == 0) return 999999; // Ilimitado
+        if (delaySeconds == 0) return 999999; 
         int secondsPerDay = 86400;
         return secondsPerDay / delaySeconds;
     }
     
-    /**
-     * Calcula número aproximado de possibilidades de spawn
-     */
+    
     private long calculatePossibilities(int radius) {
         return (long) (Math.PI * radius * radius);
     }
     
-    /**
-     * Formata números grandes para leitura
-     */
+    
     private String formatLargeNumber(long number) {
         if (number >= 1_000_000_000) {
             return String.format("%.1f bilhões", number / 1_000_000_000.0);
@@ -452,20 +436,18 @@ public class RandomTPMenu extends BaseMenu {
         }
     }
     
-    /**
-     * Cria um item de preset de raio com brilho se ativo
-     */
+    
     private ItemStack createPresetRadiusItem(int presetRadius, int currentRadius, Material material, String... lore) {
         ItemStack item = createItem(material, "", lore);
         
-        // Adiciona brilho se este preset está ativo
+        
         if (presetRadius == currentRadius) {
             ItemMeta meta = item.getItemMeta();
             meta.addEnchant(Enchantment.DURABILITY, 1, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             item.setItemMeta(meta);
             
-            // Adiciona indicador visual no lore
+            
             List<String> newLore = new ArrayList<>();
             for (String line : lore) {
                 newLore.add(line);

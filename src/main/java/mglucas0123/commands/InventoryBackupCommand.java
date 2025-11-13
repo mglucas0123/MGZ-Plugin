@@ -12,9 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Comando para gerenciar backups de inventário
- */
+
 public class InventoryBackupCommand implements CommandExecutor {
     
     private final Principal plugin;
@@ -52,7 +50,7 @@ public class InventoryBackupCommand implements CommandExecutor {
                 int backupIndex = -1;
                 if (args.length >= 2) {
                     try {
-                        backupIndex = Integer.parseInt(args[1]) - 1; // Usuário digita 1-5, mas internamente é 0-4
+                        backupIndex = Integer.parseInt(args[1]) - 1; 
                     } catch (NumberFormatException e) {
                         player.sendMessage("§cNúmero inválido!");
                         return true;
@@ -97,7 +95,7 @@ public class InventoryBackupCommand implements CommandExecutor {
         }
         
         if (backupIndex < 0 || backupIndex >= history.size()) {
-            backupIndex = history.size() - 1; // Último backup
+            backupIndex = history.size() - 1; 
         }
         
         InventoryBackup backup = history.get(backupIndex);
@@ -120,14 +118,14 @@ public class InventoryBackupCommand implements CommandExecutor {
         player.sendMessage("§aDigite §f/invbackup confirm §apara confirmar");
         player.sendMessage("§7Ou espere 30 segundos para cancelar");
         
-        // Armazenar confirmação pendente
+        
         String confirmKey = player.getUniqueId().toString() + "_restore";
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            // Remover confirmação após 30 segundos
+            
             player.removeMetadata(confirmKey, plugin);
         }, 600L);
         
-        // Salvar índice do backup para restauração
+        
         player.setMetadata(confirmKey, new org.bukkit.metadata.FixedMetadataValue(plugin, backupIndex));
     }
     

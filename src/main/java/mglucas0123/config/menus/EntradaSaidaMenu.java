@@ -25,15 +25,15 @@ public class EntradaSaidaMenu extends BaseMenu {
         String entrada = plugin.getConfig().getString("EntradaSaida.Entrada");
         String saida = plugin.getConfig().getString("EntradaSaida.Saida");
         
-        // ===== BORDAS =====
+        
         ItemStack border = createItem(Material.BLACK_STAINED_GLASS_PANE, "§8", "");
         ItemStack empty = createItem(Material.GRAY_STAINED_GLASS_PANE, "§7", "");
         
-        // Bordas superiores e inferiores
+        
         for (int i = 0; i < 9; i++) inv.setItem(i, border);
         for (int i = 45; i < 54; i++) inv.setItem(i, border);
         
-        // Bordas laterais
+        
         inv.setItem(9, border);
         inv.setItem(18, border);
         inv.setItem(27, border);
@@ -43,7 +43,7 @@ public class EntradaSaidaMenu extends BaseMenu {
         inv.setItem(35, border);
         inv.setItem(44, border);
         
-        // ===== SEÇÃO 1: MENSAGEM DE ENTRADA =====
+        
         inv.setItem(10, createItem(Material.GREEN_BANNER, "§a§l👋 MENSAGEM DE ENTRADA",
             "§8§m─────────────────────"));
         
@@ -62,7 +62,7 @@ public class EntradaSaidaMenu extends BaseMenu {
             "§c⚠ §7Edite em §econfig.yml",
             "§7Seção: §6EntradaSaida.Entrada"));
         
-        // ===== SEÇÃO 2: MENSAGEM DE SAÍDA =====
+        
         inv.setItem(19, createItem(Material.RED_BANNER, "§c§l👋 MENSAGEM DE SAÍDA",
             "§8§m─────────────────────"));
         
@@ -81,7 +81,7 @@ public class EntradaSaidaMenu extends BaseMenu {
             "§c⚠ §7Edite em §econfig.yml",
             "§7Seção: §6EntradaSaida.Saida"));
         
-        // ===== SEÇÃO 3: INFORMAÇÕES =====
+        
         inv.setItem(28, createItem(Material.KNOWLEDGE_BOOK, "§b§l📖 INFORMAÇÕES",
             "§8§m─────────────────────"));
         
@@ -110,7 +110,7 @@ public class EntradaSaidaMenu extends BaseMenu {
             "§8§m───────────────────────",
             "§7Mensagens ativas no servidor"));
         
-        // ===== SEÇÃO 4: EXEMPLOS =====
+        
         inv.setItem(37, createItem(Material.BOOK, "§e§l💡 EXEMPLOS DE USO",
             "§8§m─────────────────────"));
         
@@ -128,14 +128,14 @@ public class EntradaSaidaMenu extends BaseMenu {
             "§8§m───────────────────────",
             "§7Use cores e variáveis livremente!"));
         
-        // ===== BOTÃO VOLTAR =====
+        
         inv.setItem(49, createItem(Material.ARROW, "§7§l« Voltar",
             "§8§m───────────────────────",
             "§7Retornar ao menu principal",
             "§8§m───────────────────────",
             "§e§l➤ Clique para voltar"));
         
-        // Preencher espaços vazios
+        
         for (int i = 1; i < 8; i++) inv.setItem(i, border);
         for (int i = 14; i < 17; i++) inv.setItem(i, empty);
         for (int i = 22; i < 26; i++) inv.setItem(i, empty);

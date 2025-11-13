@@ -24,14 +24,14 @@ import org.bukkit.entity.Hanging;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-// import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-// import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+
 
 public class RegionProtection implements Listener {
     
@@ -109,7 +109,7 @@ public class RegionProtection implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         
-        // PRIORIDADE MÁXIMA: Verificar itens bloqueados ANTES de qualquer outra verificação
+        
         if (event.getItem() != null && event.getItem().getType() != Material.AIR) {
             Location location = event.getClickedBlock() != null ? 
                 event.getClickedBlock().getLocation() : player.getLocation();
@@ -122,30 +122,30 @@ public class RegionProtection implements Listener {
                     boolean isWhitelisted = region.isItemWhitelisted(itemType);
                     boolean interactFlag = region.getFlag(RegionFlag.INTERACT);
                     
-                    // Verificar whitelist primeiro
+                    
                     if (isWhitelisted) {
                         if (interactFlag) {
-                            // INTERACT = true, item na whitelist → BLOQUEAR
+                            
                             event.setCancelled(true);
                             event.setUseInteractedBlock(org.bukkit.event.Event.Result.DENY);
                             event.setUseItemInHand(org.bukkit.event.Event.Result.DENY);
                             sendActionBar(player, "§c§l✖ §cItem na whitelist bloqueado (INTERACT ativo) §c§l✖");
                             return;
                         } else {
-                            // INTERACT = false, item na whitelist → PERMITIR
-                            return; // Permite o uso
+                            
+                            return; 
                         }
                     }
                     
-                    // Sistema de bloqueio normal (para itens não whitelistados)
+                    
                     if (region.isItemBlocked(itemType)) {
-                        // PRIMEIRO: Remover/trocar o item da mão IMEDIATAMENTE
+                        
                         org.bukkit.inventory.PlayerInventory inv = player.getInventory();
                         ItemStack blockedItem = event.getItem().clone();
                         int mainHandSlot = inv.getHeldItemSlot();
                         boolean isMainHand = (event.getHand() == org.bukkit.inventory.EquipmentSlot.HAND);
                         
-                        // Procurar primeiro slot vazio para mover o item bloqueado
+                        
                         boolean foundEmpty = false;
                         for (int i = 0; i < 36; i++) {
                             if (i == mainHandSlot) continue;
@@ -163,7 +163,7 @@ public class RegionProtection implements Listener {
                             }
                         }
                         
-                        // Se não encontrou slot vazio, trocar com o primeiro item disponível
+                        
                         if (!foundEmpty) {
                             for (int i = 0; i < 36; i++) {
                                 if (i == mainHandSlot) continue;
@@ -181,7 +181,7 @@ public class RegionProtection implements Listener {
                             }
                         }
                         
-                        // DEPOIS: Cancelar o evento completamente
+                        
                         event.setCancelled(true);
                         event.setUseInteractedBlock(org.bukkit.event.Event.Result.DENY);
                         event.setUseItemInHand(org.bukkit.event.Event.Result.DENY);
@@ -236,7 +236,7 @@ public class RegionProtection implements Listener {
         
         Region region = regionManager.getHighestPriorityRegion(location);
         
-        // Verificar spawn eggs
+        
         if (event.getItem() != null && event.getItem().getType().name().contains("_SPAWN_EGG")) {
             if (!regionManager.isAllowed(location, RegionFlag.BUILD)) {
                 event.setCancelled(true);
@@ -247,7 +247,7 @@ public class RegionProtection implements Listener {
             }
         }
         
-        // Verificar whitelist para BLOCO CLICADO (baús, portas, etc.)
+        
         if (event.getClickedBlock() != null) {
             String blockType = event.getClickedBlock().getType().name();
             
@@ -255,23 +255,21 @@ public class RegionProtection implements Listener {
                 boolean isBlockWhitelisted = region.isItemWhitelisted(blockType);
                 boolean interactFlag = region.getFlag(RegionFlag.INTERACT);
                 
-                // Lógica da whitelist para blocos:
-                // Se bloco está na whitelist e INTERACT = false → Permitir
-                // Se bloco está na whitelist e INTERACT = true → Bloquear
+                
                 if (isBlockWhitelisted) {
                     if (interactFlag) {
-                        // INTERACT = true, bloco na whitelist → BLOQUEAR
+                        
                         event.setCancelled(true);
                         sendActionBar(player, "§c§l✖ §cBloco na whitelist bloqueado (INTERACT ativo) §c§l✖");
                         return;
                     } else {
-                        // INTERACT = false, bloco na whitelist → PERMITIR
-                        return; // Permite a interação com o bloco
+                        
+                        return; 
                     }
                 }
             }
             
-            // Verificação normal do flag INTERACT (para blocos não whitelistados)
+            
             if (!regionManager.isAllowed(location, RegionFlag.INTERACT)) {
                 event.setCancelled(true);
                 sendActionBar(player, "§c§l⚠ §cVocê não pode interagir aqui §c§l⚠");
@@ -412,13 +410,13 @@ public class RegionProtection implements Listener {
             return;
         }
         
-        // Verificar flag ITEM_PICKUP primeiro
+        
         if (!regionManager.isAllowed(location, RegionFlag.ITEM_PICKUP)) {
             event.setCancelled(true);
             return;
         }
         
-        // Verificar se o item tem bloqueio total
+        
         Region region = regionManager.getHighestPriorityRegion(location);
         if (region != null) {
             ItemStack item = event.getItem().getItemStack();
@@ -427,7 +425,7 @@ public class RegionProtection implements Listener {
                 if (region.isItemTotalBlocked(itemType)) {
                     org.bukkit.inventory.PlayerInventory inv = player.getInventory();
                     
-                    // Verificar se há espaço no inventário (slots 9-35)
+                    
                     boolean hasInventorySpace = false;
                     for (int i = 9; i < 36; i++) {
                         ItemStack slotItem = inv.getItem(i);
@@ -437,36 +435,36 @@ public class RegionProtection implements Listener {
                         }
                     }
                     
-                    // Se tiver espaço no inventário, permitir pickup
+                    
                     if (hasInventorySpace) {
-                        // O sistema periódico vai mover automaticamente se cair na hotbar
+                        
                         return;
                     }
                     
-                    // Se não tiver espaço no inventário, tentar trocar item da hotbar com inventário
+                    
                     boolean canSwap = false;
                     for (int i = 0; i < 9; i++) {
                         ItemStack hotbarItem = inv.getItem(i);
                         if (hotbarItem != null && hotbarItem.getType() != Material.AIR) {
-                            // Verificar se tem algum item NÃO bloqueado no inventário que possa ir pra hotbar
+                            
                             for (int j = 9; j < 36; j++) {
                                 ItemStack invItem = inv.getItem(j);
                                 if (invItem != null && invItem.getType() != Material.AIR) {
                                     String invItemType = invItem.getType().name();
                                     if (!region.isItemTotalBlocked(invItemType)) {
-                                        // Pode trocar - tem item do inventário que pode ir pra hotbar
+                                        
                                         canSwap = true;
-                                        // Fazer a troca ANTES do pickup
+                                        
                                         inv.setItem(i, invItem);
                                         inv.setItem(j, hotbarItem);
-                                        return; // Permitir pickup agora que há espaço
+                                        return; 
                                     }
                                 }
                             }
                         }
                     }
                     
-                    // Se não conseguiu fazer troca, bloquear pickup
+                    
                     if (!canSwap && !hasInventorySpace) {
                         event.setCancelled(true);
                         sendActionBar(player, "§4§l⛔ §cInventário cheio! Não é possível pegar este item bloqueado. §4§l⛔");
@@ -524,10 +522,9 @@ public class RegionProtection implements Listener {
             }
         }
         
-        // Interação com ArmorStand não é tratada aqui pois a entidade será banida (não deve existir no mundo)
+        
     }
 
-    // (Removido) Manipulação e interação específica com ArmorStand foram desabilitadas pois ArmorStand será banida
     
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamageHanging(EntityDamageByEntityEvent event) {
@@ -547,10 +544,10 @@ public class RegionProtection implements Listener {
             }
         }
         
-        // ArmorStand não tem proteção específica pois está banida
+        
     }
     
-    // Proteção adicional contra quebra de Hanging (molduras, pinturas)
+    
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onHangingBreak(org.bukkit.event.hanging.HangingBreakEvent event) {
         Location location = event.getEntity().getLocation();
@@ -560,13 +557,13 @@ public class RegionProtection implements Listener {
             return;
         }
         
-        // Se INVINCIBLE ou BREAK false, cancelar QUALQUER quebra
+        
         if (region.getFlag(RegionFlag.INVINCIBLE) || !region.getFlag(RegionFlag.BREAK)) {
             event.setCancelled(true);
         }
     }
     
-    // Proteção adicional contra morte de entidades (apenas Hanging)
+    
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onEntityDeath(org.bukkit.event.entity.EntityDeathEvent event) {
         Entity entity = event.getEntity();
@@ -579,7 +576,7 @@ public class RegionProtection implements Listener {
                 return;
             }
             
-            // Se INVINCIBLE ou BREAK false, cancelar drops (entidade não deveria morrer)
+            
             if (region.getFlag(RegionFlag.INVINCIBLE) || !region.getFlag(RegionFlag.BREAK)) {
                 event.getDrops().clear();
                 event.setDroppedExp(0);
@@ -587,7 +584,7 @@ public class RegionProtection implements Listener {
         }
     }
     
-    // PROTEÇÃO MÁXIMA: Evento com prioridade LOWEST (executa PRIMEIRO)
+    
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onEntityDamageLowest(EntityDamageEvent event) {
         Entity entity = event.getEntity();
@@ -598,7 +595,7 @@ public class RegionProtection implements Listener {
         Location location = entity.getLocation();
         Region region = regionManager.getHighestPriorityRegion(location);
 
-    // Por padrão (sem região) também proteger Hanging
+    
     boolean protect = (region == null) || region.getFlag(RegionFlag.INVINCIBLE) || !region.getFlag(RegionFlag.BREAK);
 
         if (protect) {
@@ -610,7 +607,7 @@ public class RegionProtection implements Listener {
         }
     }
     
-    // BLOQUEIO TOTAL: Impede o jogador de até mesmo SEGURAR o item
+    
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onPlayerItemHeld(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
@@ -619,7 +616,7 @@ public class RegionProtection implements Listener {
             return;
         }
         
-        // Pega o item que o jogador vai segurar
+        
         ItemStack newItem = player.getInventory().getItem(event.getNewSlot());
         
         if (newItem == null || newItem.getType() == Material.AIR) {
@@ -632,29 +629,29 @@ public class RegionProtection implements Listener {
         if (region != null) {
             String itemType = newItem.getType().name();
             
-            // Verificar se o item tem bloqueio TOTAL
+            
             if (region.isItemTotalBlocked(itemType)) {
                 event.setCancelled(true);
                 
-                // Trocar para um slot vazio
+                
                 org.bukkit.inventory.PlayerInventory inv = player.getInventory();
                 for (int i = 0; i < 9; i++) {
                     ItemStack slotItem = inv.getItem(i);
                     if (slotItem == null || slotItem.getType() == Material.AIR) {
-                        // Encontrou slot vazio na hotbar
+                        
                         player.getInventory().setHeldItemSlot(i);
                         sendActionBar(player, "§4§l⛔ §cVocê não pode segurar este item nesta região! §4§l⛔");
                         return;
                     }
                 }
                 
-                // Se não houver slot vazio na hotbar, manter no slot atual
+                
                 sendActionBar(player, "§4§l⛔ §cVocê não pode segurar este item nesta região! §4§l⛔");
             }
         }
     }
     
-    // BLOQUEIO TOTAL: Impede jogador de trocar item para offhand (tecla F)
+    
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onPlayerSwapHands(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
@@ -667,7 +664,7 @@ public class RegionProtection implements Listener {
         Region region = regionManager.getHighestPriorityRegion(location);
         
         if (region != null) {
-            // Verificar item que vai para a offhand
+            
             ItemStack offHandItem = event.getOffHandItem();
             if (offHandItem != null && offHandItem.getType() != Material.AIR) {
                 String itemType = offHandItem.getType().name();
@@ -678,7 +675,7 @@ public class RegionProtection implements Listener {
                 }
             }
             
-            // Verificar item que vai para a mainhand
+            
             ItemStack mainHandItem = event.getMainHandItem();
             if (mainHandItem != null && mainHandItem.getType() != Material.AIR) {
                 String itemType = mainHandItem.getType().name();
@@ -691,7 +688,7 @@ public class RegionProtection implements Listener {
         }
     }
     
-    // BLOQUEIO TOTAL: Impede jogador de colocar item bloqueado na hotbar (slots 0-8) e offhand (slot 40)
+    
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onInventoryClick(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player)) {
@@ -710,9 +707,9 @@ public class RegionProtection implements Listener {
         if (region != null) {
             int slot = event.getSlot();
             
-            // Verificar se está tentando colocar item na hotbar (slots 0-8) ou offhand (slot 40)
+            
             if ((slot >= 0 && slot <= 8) || slot == 40) {
-                // Verificar item no cursor (arrastando para o slot)
+                
                 ItemStack cursorItem = event.getCursor();
                 if (cursorItem != null && cursorItem.getType() != Material.AIR) {
                     String itemType = cursorItem.getType().name();
@@ -724,13 +721,13 @@ public class RegionProtection implements Listener {
                 }
             }
             
-            // Verificar se está usando shift-click para mover item bloqueado
+            
             if (event.isShiftClick()) {
                 ItemStack clickedItem = event.getCurrentItem();
                 if (clickedItem != null && clickedItem.getType() != Material.AIR) {
                     String itemType = clickedItem.getType().name();
                     if (region.isItemTotalBlocked(itemType)) {
-                        // Shift-click pode mover para hotbar ou offhand
+                        
                         event.setCancelled(true);
                         sendActionBar(player, "§4§l⛔ §cVocê não pode mover este item para a hotbar! §4§l⛔");
                         return;
@@ -738,7 +735,7 @@ public class RegionProtection implements Listener {
                 }
             }
             
-            // Verificar teclas de atalho (1-9 para trocar com hotbar)
+            
             if (event.getHotbarButton() >= 0 && event.getHotbarButton() <= 8) {
                 ItemStack hotbarItem = player.getInventory().getItem(event.getHotbarButton());
                 if (hotbarItem != null && hotbarItem.getType() != Material.AIR) {
@@ -751,7 +748,7 @@ public class RegionProtection implements Listener {
                 }
             }
             
-            // Verificar se está usando número para trocar item do inventário com hotbar
+            
             if (event.getClick().name().contains("NUMBER_KEY")) {
                 ItemStack clickedItem = event.getCurrentItem();
                 if (clickedItem != null && clickedItem.getType() != Material.AIR) {

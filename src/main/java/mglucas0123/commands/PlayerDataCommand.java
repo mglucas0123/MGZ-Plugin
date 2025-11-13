@@ -15,16 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Comando administrativo para gerenciar backups COMPLETOS de player data
- * Permite que admins façam backup e restaurem dados de qualquer jogador
- */
+
 public class PlayerDataCommand implements CommandExecutor {
     
     private final Principal plugin;
     private final InventoryBackupManager backupManager;
     
-    // Armazena confirmações pendentes: senderName -> "targetName:backupIndex"
+    
     private final Map<String, String> pendingRestores = new HashMap<>();
     
     public PlayerDataCommand(Principal plugin, InventoryBackupManager backupManager) {
@@ -34,7 +31,7 @@ public class PlayerDataCommand implements CommandExecutor {
     
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // Verificar permissão
+        
         if (!sender.hasPermission("mgz.playerdata")) {
             sender.sendMessage("§cVocê não tem permissão para usar este comando!");
             return true;
@@ -76,9 +73,7 @@ public class PlayerDataCommand implements CommandExecutor {
         return true;
     }
     
-    /**
-     * Mostra ajuda do comando
-     */
+    
     private void sendHelp(CommandSender sender) {
         sender.sendMessage("§6§l========== PlayerData Backup ==========");
         sender.sendMessage("§7Gerencia backups §lCOMPLETOS§7 de player data");
@@ -102,14 +97,11 @@ public class PlayerDataCommand implements CommandExecutor {
         sender.sendMessage("§6§l======================================");
     }
     
-    /**
-     * Lista backups de um jogador
-     * /playerdata list [jogador]
-     */
+    
     private void handleList(CommandSender sender, String[] args) {
         Player target;
         
-        // Determinar jogador alvo
+        
         if (args.length >= 2) {
             target = Bukkit.getPlayer(args[1]);
             if (target == null) {
@@ -156,10 +148,7 @@ public class PlayerDataCommand implements CommandExecutor {
         sender.sendMessage("§6§l================================================");
     }
     
-    /**
-     * Restaura backup de um jogador
-     * /playerdata restore <jogador> <número>
-     */
+    
     private void handleRestore(CommandSender sender, String[] args) {
         if (args.length < 3) {
             sender.sendMessage("§cUso correto: §f/playerdata restore <jogador> <número>");
@@ -194,7 +183,7 @@ public class PlayerDataCommand implements CommandExecutor {
         
         InventoryBackup backup = history.get(backupIndex);
         
-        // Mostrar prévia detalhada
+        
         sender.sendMessage("§e§l⚠ CONFIRMAÇÃO NECESSÁRIA!");
         sender.sendMessage("§7Você está prestes a restaurar §lTODA A PLAYER DATA§7 de §f" + target.getName() + "§7!");
         sender.sendMessage("§7Backup de: §f" + getFormattedTime(backup.getTimestamp()));
@@ -213,20 +202,17 @@ public class PlayerDataCommand implements CommandExecutor {
         sender.sendMessage("§aDigite §f/playerdata confirm §apara confirmar");
         sender.sendMessage("§7Ou espere 30 segundos para cancelar");
         
-        // Salvar confirmação pendente
+        
         String senderKey = sender.getName();
         pendingRestores.put(senderKey, target.getName() + ":" + backupIndex);
         
-        // Remover após 30 segundos
+        
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             pendingRestores.remove(senderKey);
         }, 600L);
     }
     
-    /**
-     * Confirma restauração pendente
-     * /playerdata confirm
-     */
+    
     private void handleConfirm(CommandSender sender, String[] args) {
         String senderKey = sender.getName();
         
@@ -247,7 +233,7 @@ public class PlayerDataCommand implements CommandExecutor {
             return;
         }
         
-        // Realizar restauração
+        
         boolean success = backupManager.restoreBackup(target, backupIndex);
         
         if (success) {
@@ -258,7 +244,7 @@ public class PlayerDataCommand implements CommandExecutor {
             target.sendMessage("§7Um administrador (§f" + sender.getName() + "§7) restaurou seus dados.");
             target.sendMessage("§7Backup aplicado: §f#" + (backupIndex + 1));
             
-            // Log no console
+            
             Bukkit.getConsoleSender().sendMessage(
                 String.format("§c[§6MGZ-PlayerData§c] §e%s §7restaurou player data de §e%s §7(backup #%d)",
                     sender.getName(), target.getName(), backupIndex + 1)
@@ -270,14 +256,11 @@ public class PlayerDataCommand implements CommandExecutor {
         pendingRestores.remove(senderKey);
     }
     
-    /**
-     * Cria backup manual de um jogador
-     * /playerdata backup [jogador]
-     */
+    
     private void handleBackup(CommandSender sender, String[] args) {
         Player target;
         
-        // Determinar jogador alvo
+        
         if (args.length >= 2) {
             target = Bukkit.getPlayer(args[1]);
             if (target == null) {
@@ -292,7 +275,7 @@ public class PlayerDataCommand implements CommandExecutor {
             target = (Player) sender;
         }
         
-        // Criar backup
+        
         backupManager.createBackup(target, "Manual (" + sender.getName() + ")");
         
         sender.sendMessage("§a§l✔ Backup criado com sucesso!");
@@ -303,21 +286,18 @@ public class PlayerDataCommand implements CommandExecutor {
             target.sendMessage("§a§l⚠ Um administrador (§f" + sender.getName() + "§a§l) criou um backup de seus dados!");
         }
         
-        // Log no console
+        
         Bukkit.getConsoleSender().sendMessage(
             String.format("§c[§6MGZ-PlayerData§c] §e%s §7criou backup manual de §e%s",
                 sender.getName(), target.getName())
         );
     }
     
-    /**
-     * Mostra informações do sistema de backup
-     * /playerdata info [jogador]
-     */
+    
     private void handleInfo(CommandSender sender, String[] args) {
         Player target;
         
-        // Determinar jogador alvo
+        
         if (args.length >= 2) {
             target = Bukkit.getPlayer(args[1]);
             if (target == null) {
@@ -363,9 +343,7 @@ public class PlayerDataCommand implements CommandExecutor {
         sender.sendMessage("§6§l============================================");
     }
     
-    /**
-     * Formata timestamp para exibição
-     */
+    
     private String getFormattedTime(long timestamp) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return sdf.format(new Date(timestamp));

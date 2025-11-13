@@ -25,7 +25,7 @@ public class Rtp implements CommandExecutor {
     private int delay = 0;
     private int delayReport;
     
-    // Configurações de otimização
+    
     private static final int MAX_ATTEMPTS = 30;
     private static final int MIN_DISTANCE_FROM_SPAWN = 100;
 
@@ -55,7 +55,7 @@ public class Rtp implements CommandExecutor {
         delayList.add(player);
         player.sendMessage("§6[§e!§6] §aProcurando localização segura...");
 
-        // Iniciar busca ASSÍNCRONA para não bloquear servidor
+        
         int taskId = Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             searchAndTeleport(player);
         }).getTaskId();
@@ -91,20 +91,20 @@ public class Rtp implements CommandExecutor {
         Location[] safeLocationHolder = new Location[1];
         int attempts = 0;
 
-        // Tentar encontrar localização segura (máx 30 tentativas)
+        
         while (safeLocationHolder[0] == null && attempts < MAX_ATTEMPTS) {
             attempts++;
 
-            // Gerar coordenada aleatória
+            
             int x = random.nextInt(maxX * 2) - maxX;
             int z = random.nextInt(maxZ * 2) - maxZ;
 
-            // Validar distância mínima do spawn
+            
             if (Math.hypot(x, z) < MIN_DISTANCE_FROM_SPAWN) {
                 continue;
             }
 
-            // Buscar bloco seguro SEM getHighestBlockYAt (evita lag!)
+            
             safeLocationHolder[0] = findSafeLocation(world, x, z);
         }
 
@@ -115,7 +115,7 @@ public class Rtp implements CommandExecutor {
             return;
         }
 
-        // Teleportar de forma SÍNCRONA na thread principal
+        
         Bukkit.getScheduler().runTask(plugin, () -> {
             if (!player.isOnline()) {
                 return;
@@ -129,17 +129,14 @@ public class Rtp implements CommandExecutor {
         });
     }
 
-    /**
-     * Encontra uma localização segura de forma otimizada
-     * Procura por um bloco sólido com ar acima
-     */
+    
     private Location findSafeLocation(World world, int x, int z) {
-        // Começar da Y=64 e procurar para cima
+        
         for (int y = 64; y < 256; y++) {
             Block block = world.getBlockAt(x, y, z);
             Block blockAbove = world.getBlockAt(x, y + 1, z);
 
-            // Verificar se é seguro: bloco sólido embaixo + ar acima
+            
             if (isSafeBlock(block) && blockAbove.getType() == Material.AIR) {
                 return new Location(world, x + 0.5, y + 1, z + 0.5);
             }
@@ -148,13 +145,11 @@ public class Rtp implements CommandExecutor {
         return null;
     }
 
-    /**
-     * Verifica se um bloco é seguro para pousar
-     */
+    
     private boolean isSafeBlock(Block block) {
         Material type = block.getType();
         
-        // Blocos que são seguros para pousar
+        
         if (type.isSolid() && !type.toString().contains("WATER") && !type.toString().contains("LAVA")) {
             return true;
         }

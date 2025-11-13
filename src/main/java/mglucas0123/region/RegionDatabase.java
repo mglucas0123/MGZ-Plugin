@@ -103,7 +103,7 @@ public class RegionDatabase {
             boolean isUpdate = regionId > 0;
             
             if (isUpdate) {
-                // Atualizar região existente
+                
                 String updateSql = "UPDATE regions SET " +
                     "is_global = ?, pos1_x = ?, pos1_y = ?, pos1_z = ?, " +
                     "pos2_x = ?, pos2_y = ?, pos2_z = ?, priority = ? " +
@@ -133,7 +133,7 @@ public class RegionDatabase {
                     stmt.executeUpdate();
                 }
             } else {
-                // Inserir nova região
+                
                 String insertSql = "INSERT INTO regions " +
                     "(name, world, is_global, pos1_x, pos1_y, pos1_z, pos2_x, pos2_y, pos2_z, priority) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -320,7 +320,7 @@ public class RegionDatabase {
                 } else {
                     World world = Bukkit.getWorld(worldName);
                     if (world == null) {
-                        // Mundo ainda não foi carregado, pular região não-global
+                        
                         continue;
                     }
                     

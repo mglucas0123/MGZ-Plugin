@@ -18,14 +18,10 @@ public abstract class BaseMenu {
         this.plugin = plugin;
     }
     
-    /**
-     * Abre o menu para o jogador
-     */
+    
     public abstract void open(Player player);
     
-    /**
-     * Cria um item com nome e lore
-     */
+    
     protected ItemStack createItem(Material material, String name, String... lore) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
@@ -35,9 +31,7 @@ public abstract class BaseMenu {
         return item;
     }
     
-    /**
-     * Cria um item de toggle (ativado/desativado)
-     */
+    
     protected ItemStack createToggleItem(Material material, String name, boolean enabled, String... extraLore) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
@@ -47,9 +41,7 @@ public abstract class BaseMenu {
         return item;
     }
     
-    /**
-     * Preenche espaços vazios com vidro cinza
-     */
+    
     protected void fillEmpty(Inventory inv) {
         ItemStack empty = createItem(Material.GRAY_STAINED_GLASS_PANE, " ", "");
         for (int i = 0; i < inv.getSize(); i++) {
@@ -59,10 +51,7 @@ public abstract class BaseMenu {
         }
     }
     
-    /**
-     * Carrega template do menu (nome baseado na classe)
-     * Retorna null se não existir template salvo
-     */
+    
     protected GUITemplate loadTemplate(String menuName, int size) {
         GUITemplate template = GUITemplate.load(menuName, plugin.getConfig());
         if (template == null) {

@@ -5,17 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Gerencia o estado do modo editor para cada jogador.
- * Quando ativo, permite editar GUIs arrastando itens do inventário.
- */
+
 public class EditorModeManager {
     
     private static final Set<UUID> editorsAtivos = new HashSet<>();
     
-    /**
-     * Alterna o modo editor para um jogador
-     */
+    
     public static void toggle(Player player) {
         UUID id = player.getUniqueId();
         if (editorsAtivos.contains(id)) {
@@ -25,9 +20,7 @@ public class EditorModeManager {
         }
     }
     
-    /**
-     * Ativa o modo editor para um jogador
-     */
+    
     public static void enable(Player player) {
         editorsAtivos.add(player.getUniqueId());
         player.sendMessage("§a§l✓ Modo Editor ATIVADO");
@@ -36,25 +29,19 @@ public class EditorModeManager {
         player.sendMessage("§7Clique novamente no botão para desativar");
     }
     
-    /**
-     * Desativa o modo editor para um jogador
-     */
+    
     public static void disable(Player player) {
         editorsAtivos.remove(player.getUniqueId());
         player.sendMessage("§c§l✗ Modo Editor DESATIVADO");
         player.sendMessage("§7Voltando ao modo normal");
     }
     
-    /**
-     * Verifica se um jogador está em modo editor
-     */
+    
     public static boolean isActive(Player player) {
         return editorsAtivos.contains(player.getUniqueId());
     }
     
-    /**
-     * Remove jogador ao desconectar
-     */
+    
     public static void cleanup(UUID playerId) {
         editorsAtivos.remove(playerId);
     }

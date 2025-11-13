@@ -11,7 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-/** <!--- ArmorStandMenu - Controle Granular de Armor Stands ---!> **/
+
 public class ArmorStandMenu extends BaseMenu {
 
     private ConfigEditorGUI editorGUI;
@@ -27,13 +27,13 @@ public class ArmorStandMenu extends BaseMenu {
 
         boolean allowArmorStands = plugin.getConfig().getBoolean("ArmorStand.AllowArmorStands", true);
 
-        // Calcular estatísticas em tempo real
+        
         int totalArmorStands = 0;
         for (World world : Bukkit.getWorlds()) {
             totalArmorStands += world.getEntitiesByClass(ArmorStand.class).size();
         }
 
-        // === HEADER ===
+        
         ItemStack headerBorder = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         ItemStack accentPurple = createItem(Material.PURPLE_STAINED_GLASS_PANE, "§5◆");
 
@@ -44,7 +44,7 @@ public class ArmorStandMenu extends BaseMenu {
                 inv.setItem(i, headerBorder);
         }
 
-        // Info principal
+        
         inv.setItem(4, createItem(Material.ARMOR_STAND, "§5§l🗿 Armor Stand Control",
                 "§8§m──────────────────────",
                 "§7Controle total de armor stands",
@@ -53,7 +53,7 @@ public class ArmorStandMenu extends BaseMenu {
                 "§8▸ §7Status: " + (allowArmorStands ? "§a✓ Permitido" : "§c✖ Bloqueado"),
                 "§8§m──────────────────────"));
 
-        // === CONTROLE PRINCIPAL (Linha 1) ===
+        
         inv.setItem(10, createModuleItem(
                 allowArmorStands ? Material.ARMOR_STAND : Material.BARRIER,
                 "§5§l🗿 Sistema Principal",
@@ -80,7 +80,7 @@ public class ArmorStandMenu extends BaseMenu {
                         : "Remoção bloqueada",
                 "Proteção contra griefing"));
 
-        // === PROTEÇÕES AVANÇADAS (Linha 2) ===
+        
         inv.setItem(19, createModuleItem(
                 Material.TNT,
                 "§c§l� Proteção: Explosões",
@@ -108,7 +108,7 @@ public class ArmorStandMenu extends BaseMenu {
                         : "Vulnerável a fogo",
                 "Proteção contra acidentes"));
 
-        // === INTERAÇÕES (Linha 3) ===
+        
         inv.setItem(28, createModuleItem(
                 Material.DIAMOND_CHESTPLATE,
                 "§b§l� Permitir Equipar Itens",
@@ -135,23 +135,23 @@ public class ArmorStandMenu extends BaseMenu {
                         : "Nomes bloqueados",
                 "Uso de nametags"));
 
-        // === BORDAS LATERAIS ===
+        
         ItemStack sideBorder = createItem(Material.GRAY_STAINED_GLASS_PANE, " ");
         for (int i = 9; i < 45; i += 9)
             inv.setItem(i + 8, sideBorder);
 
-        // === ESPAÇOS VAZIOS ===
+        
         ItemStack filler = createItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         int[] fillerSlots = { 9, 13, 14, 15, 16, 17, 18, 22, 23, 24, 25, 26, 27, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
                 41, 42, 43, 44 };
         for (int slot : fillerSlots)
             inv.setItem(slot, filler);
 
-        // === FOOTER ===
+        
         for (int i = 45; i < 54; i++)
             inv.setItem(i, headerBorder);
 
-        // Estatísticas detalhadas
+        
         inv.setItem(45, createItem(Material.BOOK, "§e§l� Estatísticas",
                 "§8§m──────────────────────",
                 "§7Armor Stands no servidor:",
@@ -161,7 +161,7 @@ public class ArmorStandMenu extends BaseMenu {
                 "§8▸ §fProteções: §a" + getActiveProtectionsCount() + "§7/3 ativas",
                 "§8§m──────────────────────"));
 
-        // Ajuda
+        
         inv.setItem(46, createItem(Material.KNOWLEDGE_BOOK, "§b§l❓ Ajuda",
                 "§8§m──────────────────────",
                 "§7Configurações disponíveis:",
@@ -171,7 +171,7 @@ public class ArmorStandMenu extends BaseMenu {
                 "§a✓ §7Interações - Controle de uso",
                 "§8§m──────────────────────"));
 
-        // Resetar configurações
+        
         inv.setItem(48, createItem(Material.REDSTONE_BLOCK, "§c§l⚠ Resetar Padrões",
                 "§8§m──────────────────────",
                 "§7Restaura configuração padrão",
@@ -183,7 +183,7 @@ public class ArmorStandMenu extends BaseMenu {
                 "§8§m──────────────────────",
                 "§e➜ Clique para resetar"));
 
-        // Voltar
+        
         inv.setItem(49, createItem(Material.ARROW, "§7§l« Voltar ao Menu",
                 "§8§m──────────────────────",
                 "§7Retorna ao menu principal",
@@ -193,7 +193,7 @@ public class ArmorStandMenu extends BaseMenu {
                 "§8§m──────────────────────",
                 "§e➜ Clique para voltar"));
 
-        // Recarregar
+        
         inv.setItem(50, createItem(Material.EMERALD, "§a§l✔ Aplicar Mudanças",
                 "§8§m──────────────────────",
                 "§7Salva e recarrega configurações",
@@ -210,7 +210,7 @@ public class ArmorStandMenu extends BaseMenu {
         player.openInventory(inv);
     }
 
-    /** <!--- Conta quantas proteções estão ativas ---!> **/
+    
     private int getActiveProtectionsCount() {
         int count = 0;
         if (plugin.getConfig().getBoolean("ArmorStand.ProtectFromExplosions", true))
@@ -222,7 +222,7 @@ public class ArmorStandMenu extends BaseMenu {
         return count;
     }
 
-    /** <!--- Cria item de módulo com status visual ---!> **/
+    
     private ItemStack createModuleItem(Material icon, String name, boolean enabled, String description,
             String... info) {
         ItemStack item = new ItemStack(icon);
@@ -265,12 +265,12 @@ public class ArmorStandMenu extends BaseMenu {
     public void handleClick(Player player, ItemStack clicked, InventoryClickEvent event) {
         String displayName = clicked.getItemMeta().getDisplayName();
 
-        // Sistema Principal
+        
         if (displayName.contains("Sistema Principal")) {
             toggleConfig("ArmorStand.AllowArmorStands", player, "Sistema Principal");
             open(player);
         }
-        // Permissões
+        
         else if (displayName.contains("Permitir Colocação")) {
             toggleConfig("ArmorStand.AllowPlacement", player, "Colocação de Armor Stands");
             open(player);
@@ -278,7 +278,7 @@ public class ArmorStandMenu extends BaseMenu {
             toggleConfig("ArmorStand.AllowBreak", player, "Remoção de Armor Stands");
             open(player);
         }
-        // Proteções
+        
         else if (displayName.contains("Proteção: Explosões")) {
             toggleConfig("ArmorStand.ProtectFromExplosions", player, "Proteção contra Explosões");
             open(player);
@@ -289,7 +289,7 @@ public class ArmorStandMenu extends BaseMenu {
             toggleConfig("ArmorStand.ProtectFromFire", player, "Proteção contra Fogo");
             open(player);
         }
-        // Interações
+        
         else if (displayName.contains("Permitir Equipar Itens")) {
             toggleConfig("ArmorStand.AllowEquip", player, "Equipar Itens");
             open(player);
@@ -300,7 +300,7 @@ public class ArmorStandMenu extends BaseMenu {
             toggleConfig("ArmorStand.AllowRename", player, "Renomeação");
             open(player);
         }
-        // Ações
+        
         else if (displayName.contains("Resetar Padrões")) {
             resetToDefaults(player);
             open(player);
@@ -313,7 +313,7 @@ public class ArmorStandMenu extends BaseMenu {
         }
     }
 
-    /** <!--- Toggle de configuração com feedback ---!> **/
+    
     private void toggleConfig(String path, Player player, String featureName) {
         boolean current = plugin.getConfig().getBoolean(path, true);
         plugin.getConfig().set(path, !current);
@@ -323,7 +323,7 @@ public class ArmorStandMenu extends BaseMenu {
         player.sendMessage("§5§l🗿 §e[Armor Stand] §f" + featureName + ": " + status);
     }
 
-    /** <!--- Reseta todas as configurações para os padrões ---!> **/
+    
     private void resetToDefaults(Player player) {
         plugin.getConfig().set("ArmorStand.AllowArmorStands", true);
         plugin.getConfig().set("ArmorStand.AllowPlacement", true);

@@ -18,7 +18,7 @@ public class Region implements ConfigurationSerializable {
     private boolean isGlobal;
     private Set<String> blockedItems;
     private Set<String> whitelistedItems;
-    private Set<String> totalBlockedItems; // Itens que não podem nem ser segurados
+    private Set<String> totalBlockedItems; 
     
     public Region(String name, String world, Location pos1, Location pos2) {
         this.name = name;
@@ -49,7 +49,7 @@ public class Region implements ConfigurationSerializable {
     }
     
     private void initializeDefaultFlags() {
-        // Aplicar o profile DEFAULT para valores padrões balanceados e seguros
+        
         flags.put(RegionFlag.PVP, false);
         flags.put(RegionFlag.MOB_SPAWN, false);
         flags.put(RegionFlag.BUILD, false);
@@ -136,7 +136,7 @@ public class Region implements ConfigurationSerializable {
     
     public void removeBlockedItem(String material) {
         blockedItems.remove(material.toUpperCase());
-        totalBlockedItems.remove(material.toUpperCase()); // Remove também do bloqueio total
+        totalBlockedItems.remove(material.toUpperCase()); 
     }
     
     public boolean isItemBlocked(String material) {
@@ -164,7 +164,6 @@ public class Region implements ConfigurationSerializable {
         totalBlockedItems.clear();
     }
     
-    // ===== WHITELIST METHODS =====
     
     public void addWhitelistedItem(String material) {
         whitelistedItems.add(material.toUpperCase());
@@ -188,7 +187,7 @@ public class Region implements ConfigurationSerializable {
     
     public long getVolume() {
         if (isGlobal) {
-            return Long.MAX_VALUE; // Volume infinito
+            return Long.MAX_VALUE; 
         }
         double dx = Math.abs(pos2.getX() - pos1.getX()) + 1;
         double dy = Math.abs(pos2.getY() - pos1.getY()) + 1;
@@ -216,17 +215,17 @@ public class Region implements ConfigurationSerializable {
         }
         data.put("flags", flagsData);
         
-        // Salvar itens bloqueados como lista
+        
         if (!blockedItems.isEmpty()) {
             data.put("blocked-items", new ArrayList<>(blockedItems));
         }
         
-        // Salvar itens com bloqueio total como lista
+        
         if (!totalBlockedItems.isEmpty()) {
             data.put("total-blocked-items", new ArrayList<>(totalBlockedItems));
         }
         
-        // Salvar itens na whitelist como lista
+        
         if (!whitelistedItems.isEmpty()) {
             data.put("whitelisted-items", new ArrayList<>(whitelistedItems));
         }
@@ -305,7 +304,7 @@ public class Region implements ConfigurationSerializable {
             }
         }
         
-        // Carregar bloqueios totais
+        
         if (data.containsKey("total-blocked-items")) {
             Object totalBlockedObj = data.get("total-blocked-items");
             if (totalBlockedObj instanceof List) {
@@ -316,7 +315,7 @@ public class Region implements ConfigurationSerializable {
             }
         }
         
-        // Carregar whitelist
+        
         if (data.containsKey("whitelisted-items")) {
             Object whitelistObj = data.get("whitelisted-items");
             if (whitelistObj instanceof List) {

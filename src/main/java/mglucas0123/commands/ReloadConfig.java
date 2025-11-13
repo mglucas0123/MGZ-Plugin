@@ -23,10 +23,10 @@ public class ReloadConfig implements CommandExecutor {
         }
         
         try {
-            // Recarregar config.yml
+            
             plugin.reloadConfig();
             
-            // Reaplicar game rules em todos os mundos
+            
             ServerControl serverControl = new ServerControl(plugin);
             serverControl.applyGameRulesToAllWorlds();
             
@@ -36,7 +36,7 @@ public class ReloadConfig implements CommandExecutor {
             sender.sendMessage("§7- AnnounceAdvancements: §f" + plugin.getConfig().getBoolean("GameRules.AnnounceAdvancements"));
             sender.sendMessage("§7- MostrarMorte: §f" + plugin.getConfig().getBoolean("ChatControl.MostrarMorte"));
             
-            // Log no console
+            
             Bukkit.getConsoleSender().sendMessage("§a[MGZ] Configurações recarregadas por: " + sender.getName());
             
         } catch (Exception e) {

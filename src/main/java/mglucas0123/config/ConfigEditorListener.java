@@ -10,19 +10,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-/**
- * Listener responsável por gerenciar clicks nos menus de configuração
- * 
- * Este arquivo atua apenas como ROTEADOR de eventos.
- * Todos os menus foram refatorados para classes separadas em config/menus/
- */
+
 public class ConfigEditorListener implements Listener {
     
     private Principal plugin;
     private ConfigEditorGUI editorGUI;
     private ChatInputManager chatInputManager;
     
-    // Menu Classes - Todos refatorados
+    
     private AutoSaveMenu autoSaveMenu;
     private AutoRestartMenu autoRestartMenu;
     private InventoryBackupMenu inventoryBackupMenu;
@@ -34,7 +29,7 @@ public class ConfigEditorListener implements Listener {
     private EntradaSaidaMenu entradaSaidaMenu;
     private GameRulesMenu gameRulesMenu;
     
-    // Sistema de edição visual
+    
     private EditorClickHandler editorClickHandler;
     
     public ConfigEditorListener(Principal plugin) {
@@ -78,17 +73,17 @@ public class ConfigEditorListener implements Listener {
         if (editorAtivo) {
             boolean handled = editorClickHandler.handleEditorClick(event, player);
             if (handled) {
-                return; // Ação de edição já tratada (evento já cancelado dentro do handler)
+                return; 
             }
-            // Permitir interações com inventário do jogador (pegar itens)
+            
             if (event.getClickedInventory() != null && event.getClickedInventory().equals(player.getInventory())) {
-                return; // Não cancela, deixa pegar itens normalmente
+                return; 
             }
-            // Se modo editor está ativo mas não foi edição (ex: clicou em botão funcional)
-            // Permitir navegação normal
+            
+            
         }
         
-        // ===== MODO NORMAL OU CLICK EM GUI (sem edição) =====
+        
         event.setCancelled(true);
         
         ItemStack clicked = event.getCurrentItem();
@@ -98,7 +93,7 @@ public class ConfigEditorListener implements Listener {
             clicked.getType() == Material.YELLOW_STAINED_GLASS_PANE ||
             clicked.getType() == Material.ORANGE_STAINED_GLASS_PANE) return;
         
-        // Rotear para o handler apropriado
+        
         if (title.contains("MGZ")) {
             handleMainMenu(player, clicked);
         } else if (title.contains("AutoSave")) {
@@ -130,9 +125,9 @@ public class ConfigEditorListener implements Listener {
         String displayName = clicked.getItemMeta().getDisplayName();
         
         if (displayName.contains("Modo Editor")) {
-            // Toggle modo editor
+            
             EditorModeManager.toggle(player);
-            editorGUI.openMainMenu(player); // Reabrir menu para atualizar status visual
+            editorGUI.openMainMenu(player); 
         } else if (displayName.contains("AutoSave")) {
             autoSaveMenu.open(player);
         } else if (displayName.contains("AutoRestart")) {
