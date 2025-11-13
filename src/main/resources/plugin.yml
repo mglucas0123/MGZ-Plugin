@@ -1,0 +1,51 @@
+name: MGZ
+version: 1.0.0
+main: mglucas0123.Principal
+description: Plugin MGZ com sistema de regiões e utilidades
+author: Mglucas0123
+api-version: 1.20
+commands:
+  Anuncio:
+    description: Envia um anúncio para o servidor
+  Luz:
+    description: Controla a luz
+  LimparChat:
+    description: Limpa o chat
+  Repair:
+    description: Repara itens
+  RTP:
+    description: Teleporte aleatório
+  Mgz:
+    description: Comando principal MGZ
+  Region:
+    description: Gerencia regiões protegidas
+    usage: /region <wand|create|delete|flag|info|list|priority|flags>
+    aliases: [rg, regiao]
+  MgzReload:
+    description: Recarrega as configurações do plugin
+    usage: /mgzreload
+    aliases: [mgzrl, reloadmgz]
+  PlayerData:
+    description: Gerencia backups completos de player data (admin)
+    usage: /playerdata <list|restore|backup|info> [jogador] [número]
+    aliases: [pd, pdata, playerbackup]
+    permission: mgz.playerdata
+    permission-message: §cVocê não tem permissão para usar este comando!
+  AutoSave:
+    description: Gerencia o sistema de salvamento automático
+    usage: /autosave <now|reload|info>
+    aliases: [asave, save]
+    permission: mgz.autosave
+    permission-message: §cVocê não tem permissão para usar este comando!
+  AutoRestart:
+    description: Gerencia o sistema de reinício automático
+    usage: /autorestart <now|countdown|reload|info>
+    aliases: [arestart, restart]
+    permission: mgz.autorestart
+    permission-message: §cVocê não tem permissão para usar este comando!
+  MgzConfig:
+    description: Abre o editor interativo de configurações
+    usage: /mgzconfig
+    aliases: [mgzconf, configmgz, mgzedit]
+    permission: mgz.config
+    permission-message: §cVocê não tem permissão para usar este comando!

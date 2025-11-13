@@ -1,0 +1,238 @@
+###################################
+#        Dev: Mglucas0123         #
+#          Version 1.0.0          #
+#    Discord: Mglucas0123#9371    #
+###################################
+
+# ==========================================
+#     SISTEMA DE PROTEÇÃO DE REGIÕES
+# ==========================================
+# Use /region wand para obter a varinha
+# Use /region create <nome> para criar região
+# Use /region flag <região> <flag> <true/false>
+# Flags: PVP, MOB_SPAWN, BUILD, BREAK, INTERACT,
+#        INVINCIBLE, FIRE_SPREAD, EXPLOSION,
+#        ITEM_DROP, ITEM_PICKUP
+# ==========================================
+
+RTP:
+  # World: = MUNDO ONDE O TELEPORTE SERA EFETUADO, CoordsX: = COORDENADAS MAXIMAS X, CoordsZ: = COORDENADAS MAXIMAS Z.
+  World: world
+  CoordsX: 25000
+  CoordsZ: 25000
+Delays:
+  # DELAYS PARA USAR OS COMANDO CITADOS ABAIXO.
+  Anuncio: 60
+  RTP: 600
+Entrada/Saida:
+  # MENSAGENS AO ENTRAR E SAIR DO SERVIDOR.
+  Entrada: '&6[&a+&6] &b{player}'
+  Saida: '&6[&4-&6] &b{player}'
+MOTD:
+  # MENSAGEM EXIBIDA NA LISTA DE SERVIDORES.
+  Mensagem:
+  - '&a&lMGZCRAFT - ORESPAWN&b&l>> &7[1.7.10]                 &6&l[&eDiscord: https://discord.gg/ubJ4VDK&6&l]'
+  - '&a&lMGZCRAFT - ORESPAWN&b&l>> &7[1.7.10]                 &6&l[&eJunte-se a nós nessa aventura&6&l]'
+Chuva:
+  # TRUE PARA DESATIVAR CHUVA E FALSE PARA ATIVAR NOVAMENTE.
+  Desativar: true
+Placas:
+  # COLOCAR ID DO ITEM PARA BLOQUEAR VENDA POR PLACA.
+  Placa_Bloquear:
+  - '4548'
+ArmorStand:
+  # PERMITIR COLOCAÇÃO DE ARMOR STANDS - true para permitir, false para banir
+  Habilitado: false
+
+# ==========================================
+#     CONFIGURAÇÕES GLOBAIS DO SERVIDOR
+# ==========================================
+
+ChatControl:
+  # CONTROLAR MENSAGENS NO CHAT
+  
+  # Mostrar mensagens de morte no chat (true = mostrar, false = ocultar)
+  MostrarMorte: true
+
+GameRules:
+  # ==========================================
+  # REGRAS DE JOGO APLICADAS NOS MUNDOS
+  # ==========================================
+  # Cada regra pode ser aplicada em:
+  #   - Todos os mundos (Whitelist: false)
+  #   - Apenas mundos específicos (Whitelist: true + lista de mundos)
+  # 
+  # REGRAS BOOLEANAS: Enabled: true/false
+  # REGRAS NUMÉRICAS: Value: (número)
+  # ==========================================
+  
+  # ===== REGRAS BOOLEANAS (TRUE/FALSE) =====
+  
+  KeepInventory:
+    # Manter inventário ao morrer
+    Enabled: true
+    Whitelist: false
+    Worlds:
+      - world
+      - world_nether
+      - world_the_end
+  
+  AnnounceAdvancements:
+    # Mostrar mensagens de avanços/conquistas no chat
+    Enabled: false
+    Whitelist: false
+    Worlds:
+      - world
+  
+  CommandBlockOutput:
+    # Mensagens de comandos no chat
+    Enabled: false
+    Whitelist: false
+    Worlds: []
+  
+  MobGriefing:
+    # Mobs podem destruir blocos (Creepers, Enderman, etc.)
+    Enabled: false
+    Whitelist: false
+    Worlds:
+      - world
+  
+  DoInsomnia:
+    # Spawnar Phantoms quando jogadores não dormem
+    Enabled: false
+    Whitelist: false
+    Worlds:
+      - world
+      - Spawn
+  
+  DoDaylightCycle:
+    # Ciclo de dia e noite avança (false = tempo fixo)
+    # Útil para Spawn/Lobby ficar sempre de dia
+    Enabled: false
+    Whitelist: true
+    Worlds:
+      - Spawn
+  
+  DoImmediateRespawn:
+    # Jogador renasce instantaneamente sem tela de morte
+    # Útil para PvP/Minigames
+    Enabled: true
+    Whitelist: false
+    Worlds: []
+  
+  DoFireTick:
+    # Fogo se espalha e destrói blocos
+    # RECOMENDADO: false em mundos de construção
+    Enabled: false
+    Whitelist: false
+    Worlds:
+      - world
+      - Spawn
+    
+  PlayersSleepingPercentage:
+    # Porcentagem de jogadores que precisam dormir para pular a noite
+    # Padrão: 100 (todos) | Recomendado: 50, 10 ou 1
+    Value: 50
+    Whitelist: true
+    Worlds:
+      - world
+  
+  RandomTickSpeed:
+    # Velocidade de ticks aleatórios (crescimento de plantas, etc.)
+    # Padrão: 3 | Spawn/Lobby: 0-1 | Sobrevivência: 3
+    Value: 0
+    Whitelist: true
+    Worlds:
+      - Spawn
+  
+  MaxEntityCramming:
+    # Máximo de entidades no mesmo bloco antes de tomar dano
+    # Padrão: 24 | Anti-lag: 8-10
+    # Previne farms com milhares de mobs
+    Value: 10
+    Whitelist: false
+    Worlds:
+      - world
+
+# ==========================================
+#     SISTEMA DE BACKUP COMPLETO DE PLAYER DATA
+# ==========================================
+# Protege contra perda de TODOS os dados do jogador
+# Inclui: inventário, ender chest, XP, vida, fome, efeitos, localização, game mode
+# Comando admin: /playerdata (requer permissão: mgz.playerdata)
+
+InventoryBackup:
+  # Intervalo de backup automático periódico no disco em segundos (300 = 5 minutos)
+  # 0 = desabilita backup automático periódico
+  AutoBackupInterval: 300
+  
+  # Tempo de espera antes de salvar mudanças no disco (debounce) em segundos
+  # O inventário é SEMPRE atualizado em memória (instantâneo)
+  # Mas só é salvo no disco após este tempo sem mudanças (economia de I/O)
+  # Recomendado: 10-30 segundos
+  DebounceTime: 10
+  
+  MaxBackupsPerPlayer: 5
+  
+  BackupOnJoin: true
+  
+  BackupOnQuit: true
+  
+  BackupOnDeath: true
+  
+  LogBackups: true
+  
+  # ===== PROTEÇÃO CONTRA CRASH =====
+  NotifyStaffOnCrashRecovery: true
+
+# ==========================================
+#     SISTEMA DE AUTO-SAVE
+# ==========================================
+AutoSave:
+  Enabled: true
+  IntervalSeconds: 300
+  BroadcastMessage: true
+  
+  Messages:
+    SaveStart: "§e[AutoSave] §7Salvando servidor..."
+    SaveComplete: "§a[AutoSave] §7Servidor salvo com sucesso!"
+
+# ==========================================
+#     SISTEMA DE AUTO-RESTART
+# ==========================================
+AutoRestart:
+  Enabled: false
+
+  Times:
+    - "05:59"
+    - "11:59"
+    - "17:59"
+    - "00:00"
+  
+  BroadcastMessage: true
+  
+  Countdown:
+    Enabled: true
+    Seconds:
+      - 60
+      - 30
+      - 10
+      - 5
+      - 4
+      - 3
+      - 2
+      - 1
+  
+  Messages:
+    Countdown: "§c[AutoRestart] Servidor reiniciando em {SECONDS} segundos!"
+    Restart: "§c[AutoRestart] Servidor reiniciando agora!"
+
+    KickMessage: |
+      §c§l🔄 REINÍCIO AUTOMÁTICO 🔄
+
+      §7Estamos realizando um breve reinício automático do servidor.
+      §7Isto ajuda a manter o mundo estável e o desempenho saudável.
+
+      §a§lVoltamos em instantes — aguarde e reconecte!
+
+      §e§oObrigado pela paciência, veja você em breve!
