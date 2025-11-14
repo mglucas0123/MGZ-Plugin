@@ -14,8 +14,12 @@ build/
 bin/
 out/
 
+# Gradle - mas manter o wrapper
 .gradle/
-gradle/
+gradle/*
+!gradle/wrapper/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
 
 .idea/
 .vscode/
